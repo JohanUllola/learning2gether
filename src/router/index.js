@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home-Views.vue';
-import About from '../views/About-Views.vue';
 import Team from '../views/Team-Views.vue';
 import Contact from '../views/Contact-Views.vue';
 import ConfigViews from '../views/Config-Views.vue';
+import Profile from '../components/Profile.vue';
 
 const routes = [
   {
@@ -12,9 +12,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'about',
-    component: About
+    path: '/profile',
+    name: 'profile',
+    component: Profile
   },
   {
     path: '/team',
@@ -30,7 +30,10 @@ const routes = [
     path: '/config',
     name: 'config',
     component: ConfigViews
+
   }
+
+  
 ];
 
 const router = createRouter({

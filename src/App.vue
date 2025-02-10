@@ -12,11 +12,10 @@
 
 
 
-
   
   <script setup>
   import sidebar from './components/sidebar.vue';
-  import Home from './views/Home-Views.vue';
+
 
   
   </script>

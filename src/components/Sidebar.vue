@@ -16,7 +16,7 @@
 				<span class="material-icons">home</span>
 				<span class="text">Inicio</span>
 			</router-link>
-			<router-link to="/about" class="button">
+			<router-link to="/profile" class="button">
 				<span class="material-icons">description</span>
 				<span class="text">Perfil</span>
 			</router-link>
