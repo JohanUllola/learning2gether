@@ -7,6 +7,8 @@
 </template>
 
 <script setup>
+import Sidebar from './sidebar.vue';
+
 const importImage = (name) => new URL(`../assets/${name}`, import.meta.url).href;
 const games = [
   { id: 1, name: "ABC", image: importImage('abc.png') },

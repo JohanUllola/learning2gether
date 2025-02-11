@@ -1,11 +1,11 @@
 <template>
-  <div class="app">
+ <router-view/>
+ <div class="app">
     <!-- Sidebar: tu componente de navegación -->
-     <sidebar/>
     <Sidebar class="sidebar" />
     <!-- Contenedor de contenido: aquí se mostrará GameGrid -->
     <div class="content">
-      <router-view/>
+      
     </div>
   </div>
 </template>
@@ -14,7 +14,8 @@
 
   
   <script setup>
-  import sidebar from './components/sidebar.vue';
+  import Login from './components/Login.vue';
+import sidebar from './components/sidebar.vue';
 
 
   

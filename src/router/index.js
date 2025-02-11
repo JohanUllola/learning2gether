@@ -4,10 +4,23 @@ import Contact from '../views/Contact-Views.vue';
 import ConfigViews from '../views/Config-Views.vue';
 import Profile from '../components/Profile.vue';
 import Friends from '../components/Friends.vue';
+import Login from '../components/Login.vue';
+import ProfileSelection from '../components/ProfileSelection.vue';
 
 const routes = [
   {
     path: '/',
+    name: 'Login',
+    component: Login
+
+  }, {
+
+    path: '/profile-Selection',
+    name: 'profile-Selection',
+    component: ProfileSelection
+  },
+  {
+    path: '/Home',
     name: 'home',
     component: Home
   },
