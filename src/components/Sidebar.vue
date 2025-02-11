@@ -28,6 +28,17 @@
 				<span class="material-icons">email</span>
 				<span class="text">Mensajes</span>
 			</router-link>
+
+			<router-link to="/goal" class="button">
+				<span class="material-icons">email</span>
+				<span class="text">Logros</span>
+			</router-link>
+
+			<router-link to="/notify" class="button">
+				<span class="material-icons">email</span>
+				<span class="text">Notificaciones</span>
+			</router-link>
+
 		</div>
 
 		<div class="flex"></div>
