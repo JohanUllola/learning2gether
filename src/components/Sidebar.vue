@@ -20,7 +20,7 @@
 				<span class="material-icons">description</span>
 				<span class="text">Perfil</span>
 			</router-link>
-			<router-link to="/team" class="button">
+			<router-link to="/Friends" class="button">
 				<span class="material-icons">group</span>
 				<span class="text">Amigos</span>
 			</router-link>
