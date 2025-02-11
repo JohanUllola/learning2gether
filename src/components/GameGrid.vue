@@ -12,9 +12,9 @@ const games = [
   { id: 1, name: "ABC", image: importImage('abc.png') },
   { id: 2, name: "pulze", image: importImage('puzle.png') },
   { id: 3, name: "square", image: importImage('square.png') },
-  { id: 4, name: "square", image: importImage('square.png') },
-  { id: 5, name: "square", image: importImage('square.png') },
-  { id: 6, name: "tictactoe", image: importImage('tictactoe.png') },
+  { id: 4, name: "square", image: importImage('pop.png') },
+  { id: 5, name: "square", image: importImage('123456.png') },
+  { id: 6, name: "tictactoe", image: importImage('ballon.png') },
 ];
 </script>
 
