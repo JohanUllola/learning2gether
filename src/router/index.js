@@ -1,26 +1,35 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
 import Home from '../views/Home-Views.vue';
 import Contact from '../views/Contact-Views.vue';
 import ConfigViews from '../views/Config-Views.vue';
 import Profile from '../components/Profile.vue';
 import Friends from '../components/Friends.vue';
-import Login from '../components/Login.vue';
+import Login from '../views/Login-Views.vue';
 import ProfileSelection from '../components/ProfileSelection.vue';
+import RegisterViews from '../views/Register-Views.vue';
+
+
 
 const routes = [
-  {
+    {
     path: '/',
     name: 'Login',
     component: Login
 
-  }, {
+  },{
+    path: '/register',
+    name: 'Register',
+    component: RegisterViews
+
+  },
+   {
 
     path: '/profile-Selection',
     name: 'profile-Selection',
     component: ProfileSelection
   },
   {
-    path: '/Home',
+    path: '/home',
     name: 'home',
     component: Home
   },
