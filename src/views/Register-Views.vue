@@ -63,32 +63,39 @@
   </template>
   
   <script setup>
-//   import { ref } from 'vue';
-//   import { useRouter } from 'vue-router';
-//   import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
-//   import { useUserStore } from '../stores/user.js';
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
+  import { useUserStore } from '../stores/user';
   
-//   const userStore = useUserStore();
-//   const router = useRouter();
-//   const email = ref('');
-//   const password = ref('');
-//   const showPassword = ref(false);
-//   const auth = getAuth();
+  const userStore = useUserStore();
+  const router = useRouter();
+  const email = ref('');
+  const password = ref('');
+  const showPassword = ref(false);
+  //const auth = getAuth();
+
+  const handleRegister = async () => {
+    if (!email.value || password.value.length < 6) {
+      return alert('llena todos los campos')
+    }
+    userStore.registerUser(email.value, password.value)
+  }
   
-//   const handleRegister = async () => {
-//     try {
-//       const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
-//       userStore.setUser(userCredential.user);
-//       alert('Registro exitoso');
-//       router.push('/home');
-//     } catch (error) {
-//       alert(error.message);
-//     }
-//   };
+  // const handleRegister = async () => {
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
+  //     userStore.setUser(userCredential.user);
+  //     alert('Registro exitoso');
+  //     router.push('/home');
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
   
-//   const togglePassword = () => {
-//     showPassword.value = !showPassword.value;
-//   };
+  const togglePassword = () => {
+    showPassword.value = !showPassword.value;
+  };
   
 //   const registerWithGoogle = async () => {
 //     try {
