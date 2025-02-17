@@ -6,6 +6,26 @@ import Contact from '../views/Contact-Views.vue';
 import ConfigViews from '../views/Config-Views.vue';
 
 const routes = [
+<<<<<<< Updated upstream
+=======
+    {
+    path: '/Login',
+    name: 'Login',
+    component: Login
+
+  },{
+    path: '/register',
+    name: 'Register',
+    component: RegisterViews
+
+  },
+   {
+
+    path: '/profile-Selection',
+    name: 'profile-Selection',
+    component: ProfileSelection
+  },
+>>>>>>> Stashed changes
   {
     path: '/',
     name: 'home',
