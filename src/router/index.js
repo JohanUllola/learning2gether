@@ -15,13 +15,13 @@ const userStore= useUserStore();
  if(user){
   next();
  }else{
-  next('login')
+  next('/login')
  }
 }
 const routes = [
     {
     path: '/login',
-    
+    name: 'Login',
     component: Login
 
   },{
@@ -38,7 +38,7 @@ const routes = [
   },
   {
     path: '/',
-    
+    name: 'home',
     component: Home, beforeEnter: requireAuth
   },
   {
