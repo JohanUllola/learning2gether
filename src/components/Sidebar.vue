@@ -1,5 +1,5 @@
 <template>
-	<aside :class="{ 'is-expanded': is_expanded }">
+	<aside v-if="!userStore.userData" :class="{ 'is-expanded': is_expanded }">
 		<div class="logo">
 			<img :src="logoURL" alt="Vue" /> 
 		</div>

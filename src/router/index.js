@@ -7,30 +7,32 @@ import Friends from '../components/Friends.vue';
 import Login from '../views/Login-Views.vue';
 import ProfileSelection from '../components/ProfileSelection.vue';
 import RegisterViews from '../views/Register-Views.vue';
-import{useUserStore} from '../stores/user';
+import { useUserStore } from '../stores/user';
 
-const requireAuth= async (to, from ,next)=>{
-const userStore= useUserStore();
- const user = userStore.currentUser();
- if(user){
-  next();
- }else{
-  next('/login')
- }
+const requireAuth = async (to, from, next) => {
+  const userStore = useUserStore();
+  userStore.loadingSesion= true;
+  const user = userStore.currentUser();
+  if (user) {
+    next();
+  } else {
+    next('/login')
+  }
+  userStore.loadingSesion= false;
 }
 const routes = [
-    {
+  {
     path: '/login',
     name: 'Login',
     component: Login
 
-  },{
+  }, {
     path: '/register',
     name: 'Register',
     component: RegisterViews
 
   },
-   {
+  {
 
     path: '/profile-Selection',
     name: 'profile-Selection',
@@ -63,7 +65,7 @@ const routes = [
 
   }
 
-  
+
 ];
 
 const router = createRouter({

@@ -15,17 +15,22 @@
         </div>
   
         <div class="info">
-          <p><span class="material-icons">email</span> joan@email.com</p>
+          
+          <p><span class="material-icons">email</span></p>
           <p><span class="material-icons">phone</span> +01 234 567 000</p>
           <p><span class="material-icons">location_on</span> Fantino, Sanchez Ramirez</p>
         </div>
   
         <button class="edit-button">EDITAR</button>
       </div>
+      
     </div>
   </template>
   
-  <script setup></script>
+  <script setup>
+  
+  
+  </script>
   
   <style scoped>
   .profile-container {

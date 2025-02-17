@@ -6,7 +6,8 @@ import router from "../router/index.js"
 export const useUserStore = defineStore("userStore", {
     state: () => ({
         userData: null,
-        loadingUser: false
+        loadingUser: false,
+        loadingSesion: false,
     }),
     actions: {
         async registerUser(email, password) {
