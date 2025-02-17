@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
-const auth = getAuth();
+const app =initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 export{auth};

@@ -44,7 +44,7 @@
 
         <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
 
-        <button type="submit" class="btn-animate">Ingresar</button>
+        <button type="submit" class="btn-animate" >Ingresar</button>
       </form>
 
       <div class="register-prompt">
@@ -57,13 +57,25 @@
 </template>
 
 <script setup>
-// import { ref } from 'vue';
-// import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import{useUserStore}from'../stores/user';
 
-// const email = ref('');
-// const password = ref('');
-// const showPassword = ref(false);
-// const router = useRouter();
+
+
+const email = ref('');
+const password = ref('');
+const showPassword = ref(false);
+const UserStore= useUserStore();
+
+
+
+const handleLogin = async () => {
+    if (!email.value || password.value.length < 6) {
+      return alert('llena todos los campos')
+    }
+   await UserStore.loginUser(email.value, password.value);
+   router.push('/')
+  }
 
 // const handleLogin = () => {
 //   if (email.value && password.value) {

@@ -169,6 +169,40 @@ aside {
   aside.is-expanded .footer {
 	opacity: 0;
   }
+  .logout-button {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	background: none;
+	border: none;
+	color: var(--light);
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	transition: 0.2s ease-in-out;
+	font-size: 1rem;
+}
+
+.logout-button .material-icons {
+	font-size: 2rem;
+	color: var(--light);
+	transition: 0.2s ease-in-out;
+}
+
+.logout-button .text {
+	margin-left: 1rem;
+	transition: 0.2s ease-in-out;
+}
+
+.logout-button:hover {
+	background-color: var(--dark-alt);
+}
+
+.logout-button:hover .material-icons,
+.logout-button:hover .text {
+	color: var(--primary);
+}
+
   
   @media (max-width: 1024px) {
 	aside {

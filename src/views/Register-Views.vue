@@ -43,7 +43,11 @@
           </div>
   
           <div class="button-container">
-            <button type="submit" class="animate-button">Registrarse</button>
+            <button type="submit" class="animate-button" :disabled="userStore.loadingUser">
+            <span v-if="userStore.loadingUser" class="loader"></span>
+            <span v-else>Registrarse</span>
+            </button>
+
           </div>
         </form>
         
@@ -79,7 +83,8 @@
     if (!email.value || password.value.length < 6) {
       return alert('llena todos los campos')
     }
-    userStore.registerUser(email.value, password.value)
+   await userStore.registerUser(email.value, password.value)
+   router.push('/')
   }
   
   // const handleRegister = async () => {
@@ -305,6 +310,21 @@
       }
     }
   }
+  .loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 5.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
   
   .google-button {
     background: #db4437;
@@ -327,3 +347,9 @@
     to { opacity: 1; }
   }
   </style>
+
+
+
+
+
+
