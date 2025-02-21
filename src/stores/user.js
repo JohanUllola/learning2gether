@@ -20,6 +20,7 @@ export const useUserStore = defineStore("userStore", {
                 );
                 this.userData = { email: user.email, uid: user.uid };
                 router.push('/');
+                
             } catch (error) {
                 console.log(error);
 
@@ -34,6 +35,7 @@ export const useUserStore = defineStore("userStore", {
                 this.userData = { email: user.email, uid: user.uid };
                 router.push('/');
                 console.log('incio sesion usuario');
+                
             } catch (error) {
                 console.log(error);
             }

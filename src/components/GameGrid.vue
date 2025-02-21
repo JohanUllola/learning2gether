@@ -1,5 +1,5 @@
 <template>
-  <div class="game-grid">
+  <div v-if="!userStore.userData" class="game-grid">
     <div v-for="game in games" :key="game.id" class="game-card">
       <img :src="game.image" :alt="game.name" />
     </div>
@@ -7,7 +7,15 @@
 </template>
 
 <script setup>
-import Sidebar from './sidebar.vue';
+import {useUserStore} from'../stores/user';
+import {onAuthStateChanged}from 'firebase/auth';
+import { auth } from '../firebaseConfig';
+
+onAuthStateChanged(auth,(user)=>{
+	console.log(user);
+})
+
+const userStore = useUserStore();
 
 const importImage = (name) => new URL(`../assets/${name}`, import.meta.url).href;
 const games = [

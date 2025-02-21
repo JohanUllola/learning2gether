@@ -1,5 +1,5 @@
 <template>
-  <div class="search-container">
+  <div v-if="!userStore.userData" class="search-container">
     <div class="search-bar">
       <input
         type="text"
@@ -21,9 +21,20 @@
 </template>
 
 <script setup>
+import {useUserStore} from'../stores/user';
+import {onAuthStateChanged}from 'firebase/auth';
+import { auth } from '../firebaseConfig';
+
+onAuthStateChanged(auth,(user)=>{
+	console.log(user);
+})
+
+const userStore = useUserStore();
+
 const performSearch = () => {
   // Add search logic here
 };
+
 </script>
 
 <style lang="scss" scoped>

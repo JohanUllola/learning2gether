@@ -74,7 +74,7 @@ const handleLogin = async () => {
       return alert('llena todos los campos')
     }
    await UserStore.loginUser(email.value, password.value);
-   router.push('/')
+   
   }
 
 // const handleLogin = () => {
@@ -84,9 +84,9 @@ const handleLogin = async () => {
 //   }
 // };
 
-// const togglePassword = () => {
-//   showPassword.value = !showPassword.value;
-// };
+const togglePassword = () => {
+  showPassword.value = !showPassword.value;
+};
 </script>
 
 <style lang="scss" scoped>

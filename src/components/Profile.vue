@@ -19,6 +19,7 @@
           <p><span class="material-icons">email</span></p>
           <p><span class="material-icons">phone</span> +01 234 567 000</p>
           <p><span class="material-icons">location_on</span> Fantino, Sanchez Ramirez</p>
+          <p><span class="material-icons">Edad</span> 19/2/25</p>
         </div>
   
         <button class="edit-button">EDITAR</button>
