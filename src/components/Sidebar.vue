@@ -50,6 +50,7 @@ import logoURL from '../assets/logo1-01.png'
 import {useUserStore} from'../stores/user';
 import {onAuthStateChanged}from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import '../styles/main.scss';
 
 onAuthStateChanged(auth,(user)=>{
 	console.log(user);
@@ -66,7 +67,7 @@ const mainMenu = [
 	{ path: '/', icon: 'home', text: 'Inicio' },
 	{ path: '/profile', icon: 'description', text: 'Perfil' },
 	{ path: '/friends', icon: 'group', text: 'Amigos' },
-	{ path: '/contact', icon: 'email', text: 'Mensajes' },
+	{ path: '/message', icon: 'email', text: 'Mensajes' },
 	{ path: '/goal', icon: 'flag', text: 'Logros' },
 	{ path: '/notify', icon: 'notifications', text: 'Notificaciones' }
 ]
@@ -82,5 +83,7 @@ const logout=()=>{
 
 }
 </script>
+
+
 
 

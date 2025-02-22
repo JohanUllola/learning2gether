@@ -1,110 +1,393 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex justify-center items-center">
-    <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-lg">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Configuración</h2>
+  <div class="config-wrapper" :class="{'dark-mode': configStore.isDarkMode}">
+    <div class="config-card">
+      <h2 class="config-title">Configuración</h2>
 
-      <!-- Sección de Perfil -->
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Perfil</h3>
-        <div class="flex items-center mb-3">
-          <img src="/src/assets/perfil.png" alt="Perfil" class="w-16 h-16 rounded-full border-2 border-blue-500">
-          <div class="ml-4">
-            <p class="font-medium text-gray-800">Juan Pérez</p>
-            <p class="text-gray-500 text-sm">juanperez@email.com</p>
+      <!-- Tarjeta de Perfil -->
+      <div class="profile-card card">
+        <div class="profile-pic-wrapper">
+          <label for="profilePic" class="profile-pic-label">
+            <img :src="configStore.profilePic" alt="Perfil" class="profile-pic" />
+            <input id="profilePic" type="file" @change="updateProfilePic" class="profile-pic-input" />
+          </label>
+        </div>
+        <div class="profile-details">
+          <div class="detail-row">
+            <h3 class="detail-title">
+              <span v-if="!editingName">{{ configStore.userName }}</span>
+              <input
+                v-else
+                v-model="configStore.userName"
+                @blur="editingName = false"
+                class="detail-input"
+              />
+            </h3>
+            <button @click="toggleEditing('name')" class="edit-btn" title="Editar nombre">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path
+                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="detail-row">
+            <p class="detail-text">
+              <span v-if="!editingEmail">{{ configStore.userEmail }}</span>
+              <input
+                v-else
+                v-model="configStore.userEmail"
+                @blur="editingEmail = false"
+                class="detail-input"
+              />
+            </p>
+            <button @click="toggleEditing('email')" class="edit-btn" title="Editar email">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path
+                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-        <label class="block text-gray-700">Actualizar Nombre:</label>
-        <input v-model="userName" class="w-full p-2 border rounded-lg mt-1" type="text" placeholder="Nuevo nombre">
       </div>
 
-      <!-- Sección de Preferencias -->
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Preferencias</h3>
-        <div class="flex justify-between items-center mb-3">
-          <span class="text-gray-700">Modo oscuro</span>
+      <!-- Tarjeta de Preferencias -->
+      <div class="preferences-card card">
+        <h3 class="preferences-title">Preferencias</h3>
+        <div class="preference-row">
+          <span>Modo Oscuro</span>
           <label class="switch">
-            <input type="checkbox" v-model="darkMode">
+            <input type="checkbox" :checked="configStore.isDarkMode" @change="toggleDarkMode" />
+
             <span class="slider"></span>
           </label>
         </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-700">Notificaciones</span>
+        <div class="preference-row">
+          <span>Notificaciones</span>
           <label class="switch">
-            <input type="checkbox" v-model="notifications">
+            <input type="checkbox" v-model="configStore.notifications" />
             <span class="slider"></span>
           </label>
         </div>
       </div>
 
-      <!-- Botón Guardar -->
-      <button @click="saveSettings" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-        Guardar Cambios
-      </button>
+      <!-- Tarjeta de Información Adicional -->
+      <div class="additional-card card">
+        <h3 class="additional-title">Información Adicional</h3>
+        <div class="detail-row">
+          <p class="additional-text">
+            <span v-if="!editingText">{{ additionalText }}</span>
+            <input
+              v-else
+              v-model="additionalText"
+              @blur="editingText = false"
+              class="detail-input"
+            />
+          </p>
+          <button @click="toggleEditing('text')" class="edit-btn" title="Editar texto">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path
+                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Botón Guardar Cambios -->
+      <button @click="saveSettings" class="save-btn">Guardar Cambios</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
+import { defineComponent, ref } from "vue";
+import { useConfigStore } from "../stores/configStore"; // Asegúrate de que el store esté en esta ruta
+
+export default defineComponent({
+  name: "ConfigurationView",
+  setup() {
+    const configStore = useConfigStore();
+    const editingName = ref(false);
+    const editingEmail = ref(false);
+    const editingText = ref(false);
+    const additionalText = ref("Este es un texto adicional editable");
+
+    const toggleEditing = (field) => {
+      if (field === "name") editingName.value = true;
+      else if (field === "email") editingEmail.value = true;
+      else if (field === "text") editingText.value = true;
+    };
+
+    const toggleDarkMode = () => {
+      configStore.toggleDarkMode();
+    };
+
+    const updateProfilePic = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        configStore.setProfilePic(url);
+      }
+    };
+
+    const saveSettings = () => {
+      configStore.saveSettings();
+      alert("Configuración guardada con éxito");
+    };
+
     return {
-      userName: "Juan Pérez",
-      darkMode: false,
-      notifications: true
+      configStore,
+      editingName,
+      editingEmail,
+      editingText,
+      additionalText,
+      toggleEditing,
+      toggleDarkMode,
+      updateProfilePic,
+      saveSettings,
     };
   },
-  methods: {
-    saveSettings() {
-      alert("Configuración guardada con éxito");
-    }
-  }
-};
+});
 </script>
 
-<style scoped>
-/* Estilo para los interruptores */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
+<style lang="scss" scoped>
+/* Variables de colores y estilos */
+$bg-light: #f5f7fa;
+$bg-dark: #2d2d2d;
+$card-bg: #ffffff;
+$card-dark-bg: #444444;
+$text-color: #333333;
+$text-dark-color: #eeeeee;
+$primary-color: #4caf50;
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+$radius: 10px;
+
+/* Contenedor principal */
+.config-wrapper {
+  background-color: $bg-light;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.dark-mode {
+    background-color: $bg-dark;
+  }
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* Tarjeta principal */
+.config-card {
+  background-color: $card-bg;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  transition: background-color 0.3s;
+
+  .config-title {
+    text-align: center;
+    font-size: 1.8em;
+    color: $text-color;
+    margin-bottom: 20px;
+  }
 }
 
-.slider {
-  position: absolute;
+/* Clases comunes para las tarjetas */
+.card {
+  background-color: lighten($card-bg, 5%);
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+/* Tarjeta de perfil */
+.profile-card {
+  display: flex;
+  align-items: center;
+
+  .profile-pic-wrapper {
+    position: relative;
+
+    .profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid $primary-color;
+      object-fit: cover;
+    }
+
+    .profile-pic-input {
+      display: none;
+    }
+  }
+
+  .profile-details {
+    margin-left: 20px;
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .detail-title {
+        font-size: 1.2em;
+        color: $text-color;
+      }
+
+      .detail-text {
+        font-size: 0.95em;
+        color: $text-color;
+      }
+
+      .detail-input {
+        border: none;
+        border-bottom: 1px solid $text-color;
+        background: transparent;
+        color: $text-color;
+        font-size: inherit;
+        &:focus {
+          outline: none;
+          border-bottom-color: $primary-color;
+        }
+      }
+
+      .edit-btn {
+        background: none;
+        border: none;
+        margin-left: 10px;
+        cursor: pointer;
+        svg {
+          width: 20px;
+          height: 20px;
+          fill: $primary-color;
+          transition: fill 0.3s;
+        }
+        &:hover svg {
+          fill: darken($primary-color, 10%);
+        }
+      }
+    }
+  }
+}
+
+/* Tarjeta de Preferencias */
+.preferences-card {
+  .preferences-title {
+    font-size: 1.1em;
+    color: $text-color;
+    margin-bottom: 10px;
+  }
+  .preference-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    span {
+      color: $text-color;
+    }
+
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 20px;
+        transition: 0.4s;
+        &:before {
+          content: "";
+          position: absolute;
+          height: 14px;
+          width: 14px;
+          left: 3px;
+          bottom: 3px;
+          background-color: white;
+          border-radius: 50%;
+          transition: 0.4s;
+        }
+      }
+      input:checked + .slider {
+        background-color: $primary-color;
+      }
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+    }
+  }
+}
+
+/* Tarjeta de Información Adicional */
+.additional-card {
+  .additional-title {
+    font-size: 1.1em;
+    color: $text-color;
+    margin-bottom: 10px;
+  }
+  .additional-text {
+    font-size: 0.95em;
+    color: $text-color;
+  }
+  .detail-row {
+    display: flex;
+    align-items: center;
+
+    .detail-input {
+      border: none;
+      border-bottom: 1px solid $text-color;
+      background: transparent;
+      color: $text-color;
+      font-size: inherit;
+      &:focus {
+        outline: none;
+        border-bottom-color: $primary-color;
+      }
+    }
+    .edit-btn {
+      background: none;
+      border: none;
+      margin-left: 10px;
+      cursor: pointer;
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: $primary-color;
+        transition: fill 0.3s;
+      }
+      &:hover svg {
+        fill: darken($primary-color, 10%);
+      }
+    }
+  }
+}
+
+/* Botón de Guardar Cambios */
+.save-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: $primary-color;
+  border: none;
+  border-radius: $radius;
+  color: white;
+  font-size: 1em;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 20px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #4CAF50;
-}
-
-input:checked + .slider:before {
-  transform: translateX(20px);
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
 }
 </style>

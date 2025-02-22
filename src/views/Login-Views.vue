@@ -59,6 +59,7 @@
 <script setup>
 import { ref } from 'vue';
 import{useUserStore}from'../stores/user';
+import router from '../router';
 
 
 
@@ -74,6 +75,8 @@ const handleLogin = async () => {
       return alert('llena todos los campos')
     }
    await UserStore.loginUser(email.value, password.value);
+   router.push('/');
+   
    
   }
 
