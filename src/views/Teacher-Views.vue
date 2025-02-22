@@ -73,7 +73,7 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { db } from "../firebaseConfig"; // Asegúrate de tener configurado Firebase
 import { collection, onSnapshot } from "firebase/firestore";
-import FriendsSystem from "../components/Friends.vue";
+import FriendsSystem from "../components/Students.vue";
 import NotificationSystem from "../components/NotificationSystem.vue";
 
 const students = ref([]);

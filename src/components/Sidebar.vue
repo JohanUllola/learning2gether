@@ -34,11 +34,11 @@
 		</div>
 
 		<div class="menu">
-	<button class="button logout-button" @click="userStore.logoutUser">
-		<span class="material-icons">logout</span>
-		<span class="text">Cerrar sesión</span>
-	</button>
-</div>
+			<button class="button logout-button" @click="userStore.logoutUser">
+				<span class="material-icons">logout</span>
+				<span class="text">Cerrar sesión</span>
+			</button>
+		</div>
 
 	</aside>
 </template>
@@ -58,15 +58,13 @@ onAuthStateChanged(auth,(user)=>{
 
 const userStore = useUserStore();
 
-
-
 const route = useRoute()
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
 
 const mainMenu = [
 	{ path: '/', icon: 'home', text: 'Inicio' },
 	{ path: '/profile', icon: 'description', text: 'Perfil' },
-	{ path: '/friends', icon: 'group', text: 'Amigos' },
+	{ path: '/students', icon: 'school', text: 'Estudiantes' },
 	{ path: '/message', icon: 'email', text: 'Mensajes' },
 	{ path: '/goal', icon: 'flag', text: 'Logros' },
 	{ path: '/notify', icon: 'notifications', text: 'Notificaciones' }
@@ -83,7 +81,3 @@ const logout=()=>{
 
 }
 </script>
-
-
-
-

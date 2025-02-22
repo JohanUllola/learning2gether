@@ -5,7 +5,7 @@ import router from './router';
 
 
 //import './styles/rules.scss';
-//import './styles/variables.scss';
+import './styles/variables.scss';
 
 
 

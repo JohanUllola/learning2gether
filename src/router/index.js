@@ -1,9 +1,7 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home-Views.vue';
-import Contact from '../views/Contact-Views.vue';
 import ConfigViews from '../views/Config-Views.vue';
-import Friends from '../components/Friends.vue';
 import Login from '../views/Login-Views.vue';
 import ProfileSelection from '../components/ProfileSelection.vue';
 import RegisterViews from '../views/Register-Views.vue';
@@ -12,7 +10,8 @@ import ProfileViews from '../views/Profile-Views.vue';
 import TeacherViews from '../views/Teacher-Views.vue';
 import NotificationSystem from '../components/NotificationSystem.vue';
 import AchievementSystem from '../components/AchievementSystem.vue';
-import MessageView from '../components/MessageView.vue';
+import MessageView from '../views/MessageView.vue';
+import students from '../components/Students.vue';
 
 
 const requireAuth = async (to, from, next) => {
@@ -60,9 +59,9 @@ const routes = [
     component: ProfileViews
   },
   {
-    path: '/Friends',
-    name: 'Friends',
-    component: Friends
+    path: '/students',
+    name: 'students',
+    component: students
   },
   {
     path: '/message',
