@@ -58,7 +58,6 @@
           <span>Modo Oscuro</span>
           <label class="switch">
             <input type="checkbox" :checked="configStore.isDarkMode" @change="toggleDarkMode" />
-
             <span class="slider"></span>
           </label>
         </div>
@@ -154,11 +153,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 /* Variables de colores y estilos */
 $bg-light: #f5f7fa;
-$bg-dark: #2d2d2d;
+$bg-dark: #2c3e50; // Fondo general en modo oscuro (igual que en Profile-Views)
 $card-bg: #ffffff;
-$card-dark-bg: #444444;
+$card-dark-bg: #34495e; // Fondo de tarjeta en modo oscuro (igual que en Profile-Views)
 $text-color: #333333;
-$text-dark-color: #eeeeee;
+$text-dark-color: #ecf0f1; // Texto en modo oscuro (igual que en Profile-Views)
 $primary-color: #4caf50;
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 $radius: 10px;
@@ -185,24 +184,49 @@ $radius: 10px;
   padding: 20px;
   width: 100%;
   max-width: 600px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 
   .config-title {
     text-align: center;
     font-size: 1.8em;
     color: $text-color;
     margin-bottom: 20px;
+    transition: color 0.3s;
   }
 }
 
-/* Clases comunes para las tarjetas */
+/* Estilos generales para las tarjetas internas */
 .card {
   background-color: lighten($card-bg, 5%);
   border-radius: $radius;
   box-shadow: $shadow;
   padding: 15px;
   margin-bottom: 20px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Modo oscuro para tarjetas y textos, alineado con Profile-Views */
+.config-wrapper.dark-mode {
+  .config-card {
+    background-color: $card-dark-bg;
+    .config-title {
+      color: $text-dark-color;
+    }
+    .card {
+      background-color: $card-dark-bg;
+      .detail-title,
+      .detail-text,
+      .preferences-title,
+      .additional-title,
+      .additional-text {
+        color: $text-dark-color;
+      }
+      .detail-input {
+        color: $text-dark-color;
+        border-bottom: 1px solid $text-dark-color;
+      }
+    }
+  }
 }
 
 /* Tarjeta de perfil */
@@ -237,11 +261,13 @@ $radius: 10px;
       .detail-title {
         font-size: 1.2em;
         color: $text-color;
+        transition: color 0.3s;
       }
 
       .detail-text {
         font-size: 0.95em;
         color: $text-color;
+        transition: color 0.3s;
       }
 
       .detail-input {
@@ -250,6 +276,7 @@ $radius: 10px;
         background: transparent;
         color: $text-color;
         font-size: inherit;
+        transition: color 0.3s, border-bottom-color 0.3s;
         &:focus {
           outline: none;
           border-bottom-color: $primary-color;
@@ -281,6 +308,7 @@ $radius: 10px;
     font-size: 1.1em;
     color: $text-color;
     margin-bottom: 10px;
+    transition: color 0.3s;
   }
   .preference-row {
     display: flex;
@@ -289,6 +317,7 @@ $radius: 10px;
     margin-bottom: 10px;
     span {
       color: $text-color;
+      transition: color 0.3s;
     }
 
     .switch {
@@ -337,10 +366,12 @@ $radius: 10px;
     font-size: 1.1em;
     color: $text-color;
     margin-bottom: 10px;
+    transition: color 0.3s;
   }
   .additional-text {
     font-size: 0.95em;
     color: $text-color;
+    transition: color 0.3s;
   }
   .detail-row {
     display: flex;
@@ -352,6 +383,7 @@ $radius: 10px;
       background: transparent;
       color: $text-color;
       font-size: inherit;
+      transition: color 0.3s, border-bottom-color 0.3s;
       &:focus {
         outline: none;
         border-bottom-color: $primary-color;
