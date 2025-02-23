@@ -3,54 +3,6 @@
     <div class="config-card">
       <h2 class="config-title">Configuración</h2>
 
-      <!-- Tarjeta de Perfil -->
-      <div class="profile-card card">
-        <div class="profile-pic-wrapper">
-          <label for="profilePic" class="profile-pic-label">
-            <img :src="configStore.profilePic" alt="Perfil" class="profile-pic" />
-            <input id="profilePic" type="file" @change="updateProfilePic" class="profile-pic-input" />
-          </label>
-        </div>
-        <div class="profile-details">
-          <div class="detail-row">
-            <h3 class="detail-title">
-              <span v-if="!editingName">{{ configStore.userName }}</span>
-              <input
-                v-else
-                v-model="configStore.userName"
-                @blur="editingName = false"
-                class="detail-input"
-              />
-            </h3>
-            <button @click="toggleEditing('name')" class="edit-btn" title="Editar nombre">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path
-                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="detail-row">
-            <p class="detail-text">
-              <span v-if="!editingEmail">{{ configStore.userEmail }}</span>
-              <input
-                v-else
-                v-model="configStore.userEmail"
-                @blur="editingEmail = false"
-                class="detail-input"
-              />
-            </p>
-            <button @click="toggleEditing('email')" class="edit-btn" title="Editar email">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path
-                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- Tarjeta de Preferencias -->
       <div class="preferences-card card">
         <h3 class="preferences-title">Preferencias</h3>
@@ -67,6 +19,35 @@
             <input type="checkbox" v-model="configStore.notifications" />
             <span class="slider"></span>
           </label>
+        </div>
+        <div class="preference-row">
+          <span>Nivel de Dificultad</span>
+          <select v-model="configStore.difficultyLevel" class="difficulty-select">
+            <option value="easy">Fácil</option>
+            <option value="medium">Medio</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </div>
+        <div class="preference-row">
+          <span>Categorías Favoritas</span>
+          <div class="categories-select">
+            <label>
+              <input type="checkbox" v-model="configStore.favoriteCategories" value="math" />
+              Matemáticas
+            </label>
+            <label>
+              <input type="checkbox" v-model="configStore.favoriteCategories" value="language" />
+              Lenguaje
+            </label>
+            <label>
+              <input type="checkbox" v-model="configStore.favoriteCategories" value="science" />
+              Ciencias
+            </label>
+          </div>
+        </div>
+        <div class="preference-row">
+          <span>Tiempo de Juego Diario</span>
+          <input type="number" v-model="configStore.dailyPlayTime" class="playtime-input" min="0" />
         </div>
       </div>
 
@@ -107,27 +88,15 @@ export default defineComponent({
   name: "ConfigurationView",
   setup() {
     const configStore = useConfigStore();
-    const editingName = ref(false);
-    const editingEmail = ref(false);
     const editingText = ref(false);
     const additionalText = ref("Este es un texto adicional editable");
 
     const toggleEditing = (field) => {
-      if (field === "name") editingName.value = true;
-      else if (field === "email") editingEmail.value = true;
-      else if (field === "text") editingText.value = true;
+      if (field === "text") editingText.value = true;
     };
 
     const toggleDarkMode = () => {
       configStore.toggleDarkMode();
-    };
-
-    const updateProfilePic = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const url = URL.createObjectURL(file);
-        configStore.setProfilePic(url);
-      }
     };
 
     const saveSettings = () => {
@@ -137,13 +106,10 @@ export default defineComponent({
 
     return {
       configStore,
-      editingName,
-      editingEmail,
       editingText,
       additionalText,
       toggleEditing,
       toggleDarkMode,
-      updateProfilePic,
       saveSettings,
     };
   },
@@ -161,6 +127,28 @@ $text-dark-color: #ecf0f1; // Texto en modo oscuro (igual que en Profile-Views)
 $primary-color: #4caf50;
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 $radius: 10px;
+$transition: 0.3s ease-in-out;
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 /* Contenedor principal */
 .config-wrapper {
@@ -170,6 +158,7 @@ $radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn $transition;
 
   &.dark-mode {
     background-color: $bg-dark;
@@ -184,14 +173,15 @@ $radius: 10px;
   padding: 20px;
   width: 100%;
   max-width: 600px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color $transition, color $transition;
+  animation: slideIn $transition;
 
   .config-title {
     text-align: center;
     font-size: 1.8em;
     color: $text-color;
     margin-bottom: 20px;
-    transition: color 0.3s;
+    transition: color $transition;
   }
 }
 
@@ -202,7 +192,12 @@ $radius: 10px;
   box-shadow: $shadow;
   padding: 15px;
   margin-bottom: 20px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color $transition, color $transition;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* Modo oscuro para tarjetas y textos, alineado con Profile-Views */
@@ -214,8 +209,6 @@ $radius: 10px;
     }
     .card {
       background-color: $card-dark-bg;
-      .detail-title,
-      .detail-text,
       .preferences-title,
       .additional-title,
       .additional-text {
@@ -225,78 +218,8 @@ $radius: 10px;
         color: $text-dark-color;
         border-bottom: 1px solid $text-dark-color;
       }
-    }
-  }
-}
-
-/* Tarjeta de perfil */
-.profile-card {
-  display: flex;
-  align-items: center;
-
-  .profile-pic-wrapper {
-    position: relative;
-
-    .profile-pic {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid $primary-color;
-      object-fit: cover;
-    }
-
-    .profile-pic-input {
-      display: none;
-    }
-  }
-
-  .profile-details {
-    margin-left: 20px;
-
-    .detail-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-
-      .detail-title {
-        font-size: 1.2em;
-        color: $text-color;
-        transition: color 0.3s;
-      }
-
-      .detail-text {
-        font-size: 0.95em;
-        color: $text-color;
-        transition: color 0.3s;
-      }
-
-      .detail-input {
-        border: none;
-        border-bottom: 1px solid $text-color;
-        background: transparent;
-        color: $text-color;
-        font-size: inherit;
-        transition: color 0.3s, border-bottom-color 0.3s;
-        &:focus {
-          outline: none;
-          border-bottom-color: $primary-color;
-        }
-      }
-
-      .edit-btn {
-        background: none;
-        border: none;
-        margin-left: 10px;
-        cursor: pointer;
-        svg {
-          width: 20px;
-          height: 20px;
-          fill: $primary-color;
-          transition: fill 0.3s;
-        }
-        &:hover svg {
-          fill: darken($primary-color, 10%);
-        }
+      span, label {
+        color: $text-dark-color;
       }
     }
   }
@@ -308,7 +231,7 @@ $radius: 10px;
     font-size: 1.1em;
     color: $text-color;
     margin-bottom: 10px;
-    transition: color 0.3s;
+    transition: color $transition;
   }
   .preference-row {
     display: flex;
@@ -317,7 +240,7 @@ $radius: 10px;
     margin-bottom: 10px;
     span {
       color: $text-color;
-      transition: color 0.3s;
+      transition: color $transition;
     }
 
     .switch {
@@ -358,6 +281,52 @@ $radius: 10px;
       }
     }
   }
+  .difficulty-select {
+    width: 100%;
+    padding: 5px;
+    border-radius: $radius;
+    border: 1px solid $text-color;
+    background: transparent;
+    color: $text-color;
+    transition: color $transition, border-color $transition;
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+    &.dark-mode {
+      border-color: $text-dark-color;
+      color: $text-dark-color;
+    }
+  }
+  .categories-select {
+    display: flex;
+    flex-direction: column;
+    label {
+      margin-bottom: 5px;
+      color: $text-color;
+      transition: color $transition;
+      input {
+        margin-right: 5px;
+      }
+    }
+  }
+  .playtime-input {
+    width: 100%;
+    padding: 5px;
+    border-radius: $radius;
+    border: 1px solid $text-color;
+    background: transparent;
+    color: $text-color;
+    transition: color $transition, border-color $transition;
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+    &.dark-mode {
+      border-color: $text-dark-color;
+      color: $text-dark-color;
+    }
+  }
 }
 
 /* Tarjeta de Información Adicional */
@@ -366,12 +335,12 @@ $radius: 10px;
     font-size: 1.1em;
     color: $text-color;
     margin-bottom: 10px;
-    transition: color 0.3s;
+    transition: color $transition;
   }
   .additional-text {
     font-size: 0.95em;
     color: $text-color;
-    transition: color 0.3s;
+    transition: color $transition;
   }
   .detail-row {
     display: flex;
@@ -383,7 +352,7 @@ $radius: 10px;
       background: transparent;
       color: $text-color;
       font-size: inherit;
-      transition: color 0.3s, border-bottom-color 0.3s;
+      transition: color $transition, border-bottom-color $transition;
       &:focus {
         outline: none;
         border-bottom-color: $primary-color;
@@ -398,7 +367,7 @@ $radius: 10px;
         width: 20px;
         height: 20px;
         fill: $primary-color;
-        transition: fill 0.3s;
+        transition: fill $transition;
       }
       &:hover svg {
         fill: darken($primary-color, 10%);
@@ -417,7 +386,7 @@ $radius: 10px;
   color: white;
   font-size: 1em;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color $transition;
   &:hover {
     background-color: darken($primary-color, 10%);
   }
