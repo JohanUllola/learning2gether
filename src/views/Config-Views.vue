@@ -1,11 +1,12 @@
 <template>
-  <div class="config-wrapper" :class="{'dark-mode': configStore.isDarkMode}">
+  <div class="config-wrapper" :class="{ 'dark-mode': configStore.isDarkMode }">
     <div class="config-card">
       <h2 class="config-title">Configuración</h2>
 
       <!-- Tarjeta de Preferencias -->
       <div class="preferences-card card">
         <h3 class="preferences-title">Preferencias</h3>
+
         <div class="preference-row">
           <span>Modo Oscuro</span>
           <label class="switch">
@@ -13,6 +14,7 @@
             <span class="slider"></span>
           </label>
         </div>
+
         <div class="preference-row">
           <span>Notificaciones</span>
           <label class="switch">
@@ -20,57 +22,24 @@
             <span class="slider"></span>
           </label>
         </div>
+
         <div class="preference-row">
-          <span>Nivel de Dificultad</span>
-          <select v-model="configStore.difficultyLevel" class="difficulty-select">
-            <option value="easy">Fácil</option>
-            <option value="medium">Medio</option>
-            <option value="hard">Difícil</option>
+          <span>Volumen de Audio</span>
+          <input type="range" v-model="configStore.audioVolume" min="0" max="100" />
+        </div>
+
+        <div class="preference-row">
+          <span>Idioma</span>
+          <select v-model="configStore.language" class="language-select">
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+            <option value="fr">Francés</option>
           </select>
         </div>
-        <div class="preference-row">
-          <span>Categorías Favoritas</span>
-          <div class="categories-select">
-            <label>
-              <input type="checkbox" v-model="configStore.favoriteCategories" value="math" />
-              Matemáticas
-            </label>
-            <label>
-              <input type="checkbox" v-model="configStore.favoriteCategories" value="language" />
-              Lenguaje
-            </label>
-            <label>
-              <input type="checkbox" v-model="configStore.favoriteCategories" value="science" />
-              Ciencias
-            </label>
-          </div>
-        </div>
-        <div class="preference-row">
-          <span>Tiempo de Juego Diario</span>
-          <input type="number" v-model="configStore.dailyPlayTime" class="playtime-input" min="0" />
-        </div>
-      </div>
 
-      <!-- Tarjeta de Información Adicional -->
-      <div class="additional-card card">
-        <h3 class="additional-title">Información Adicional</h3>
-        <div class="detail-row">
-          <p class="additional-text">
-            <span v-if="!editingText">{{ additionalText }}</span>
-            <input
-              v-else
-              v-model="additionalText"
-              @blur="editingText = false"
-              class="detail-input"
-            />
-          </p>
-          <button @click="toggleEditing('text')" class="edit-btn" title="Editar texto">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path
-                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z"
-              />
-            </svg>
-          </button>
+        <div class="preference-row">
+          <span>Temporizador de Inactividad (min)</span>
+          <input type="number" v-model="configStore.inactivityTimer" min="1" max="60" />
         </div>
       </div>
 
@@ -80,77 +49,24 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import { useConfigStore } from "../stores/configStore"; // Asegúrate de que el store esté en esta ruta
+<script setup>
+import { useConfigStore } from '../stores/configStore';
 
-export default defineComponent({
-  name: "ConfigurationView",
-  setup() {
-    const configStore = useConfigStore();
-    const editingText = ref(false);
-    const additionalText = ref("Este es un texto adicional editable");
+const configStore = useConfigStore();
 
-    const toggleEditing = (field) => {
-      if (field === "text") editingText.value = true;
-    };
+const toggleDarkMode = () => {
+  configStore.toggleDarkMode();
+};
 
-    const toggleDarkMode = () => {
-      configStore.toggleDarkMode();
-    };
-
-    const saveSettings = () => {
-      configStore.saveSettings();
-      alert("Configuración guardada con éxito");
-    };
-
-    return {
-      configStore,
-      editingText,
-      additionalText,
-      toggleEditing,
-      toggleDarkMode,
-      saveSettings,
-    };
-  },
-});
+const saveSettings = () => {
+  configStore.saveSettings();
+  alert('Configuración guardada con éxito');
+};
 </script>
 
 <style lang="scss" scoped>
-/* Variables de colores y estilos */
-$bg-light: #f5f7fa;
-$bg-dark: #2c3e50; // Fondo general en modo oscuro (igual que en Profile-Views)
-$card-bg: #ffffff;
-$card-dark-bg: #34495e; // Fondo de tarjeta en modo oscuro (igual que en Profile-Views)
-$text-color: #333333;
-$text-dark-color: #ecf0f1; // Texto en modo oscuro (igual que en Profile-Views)
-$primary-color: #4caf50;
-$shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-$radius: 10px;
-$transition: 0.3s ease-in-out;
+@import '../styles/variables';
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Contenedor principal */
 .config-wrapper {
   background-color: $bg-light;
   min-height: 100vh;
@@ -158,14 +74,14 @@ $transition: 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn $transition;
+  transition: background-color 0.3s, color 0.3s;
 
   &.dark-mode {
     background-color: $bg-dark;
+    color: white;
   }
 }
 
-/* Tarjeta principal */
 .config-card {
   background-color: $card-bg;
   border-radius: $radius;
@@ -173,26 +89,24 @@ $transition: 0.3s ease-in-out;
   padding: 20px;
   width: 100%;
   max-width: 600px;
-  transition: background-color $transition, color $transition;
-  animation: slideIn $transition;
+  transition: background-color 0.3s, color 0.3s;
 
   .config-title {
     text-align: center;
     font-size: 1.8em;
     color: $text-color;
     margin-bottom: 20px;
-    transition: color $transition;
   }
 }
 
-/* Estilos generales para las tarjetas internas */
+/* Estilos de la tarjeta */
 .card {
   background-color: lighten($card-bg, 5%);
   border-radius: $radius;
   box-shadow: $shadow;
   padding: 15px;
   margin-bottom: 20px;
-  transition: background-color $transition, color $transition;
+  transition: background-color 0.3s, color 0.3s;
 
   &:hover {
     transform: translateY(-5px);
@@ -200,58 +114,82 @@ $transition: 0.3s ease-in-out;
   }
 }
 
-/* Modo oscuro para tarjetas y textos, alineado con Profile-Views */
-.config-wrapper.dark-mode {
-  .config-card {
-    background-color: $card-dark-bg;
-    .config-title {
-      color: $text-dark-color;
-    }
-    .card {
-      background-color: $card-dark-bg;
-      .preferences-title,
-      .additional-title,
-      .additional-text {
-        color: $text-dark-color;
-      }
-      .detail-input {
-        color: $text-dark-color;
-        border-bottom: 1px solid $text-dark-color;
-      }
-      span, label {
-        color: $text-dark-color;
-      }
-    }
+/* Modo Oscuro */
+.dark-mode {
+  .card {
+    background-color: #1c2a39 !important; // Azul oscuro
+    color: white !important;
+    border: 1px solid #30475e;
+  }
+
+  .preferences-title,
+  .preference-row span {
+    color: white !important;
+  }
+
+  .switch input:checked + .slider {
+    background-color: rgb(16, 148, 108) !important;
+  }
+
+  /* Corrigiendo inputs en modo oscuro */
+  input,
+  select {
+    background-color: #2a3d55 !important;
+    border: 1px solid #547aa5 !important;
+    color: white !important;
+  }
+
+  input::placeholder {
+    color: #b0c4de !important;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: #61a5c2 !important;
+  }
+
+  /* Rango */
+  input[type="range"] {
+    background: transparent !important;
+    accent-color: white !important;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    background: #61a5c2 !important;
   }
 }
 
-/* Tarjeta de Preferencias */
 .preferences-card {
   .preferences-title {
     font-size: 1.1em;
     color: $text-color;
     margin-bottom: 10px;
-    transition: color $transition;
+    transition: color 0.3s;
   }
+
   .preference-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+
     span {
       color: $text-color;
-      transition: color $transition;
+      transition: color 0.3s;
     }
 
     .switch {
       position: relative;
       width: 40px;
       height: 20px;
+
       input {
         opacity: 0;
         width: 0;
         height: 0;
       }
+
       .slider {
         position: absolute;
         top: 0;
@@ -260,7 +198,8 @@ $transition: 0.3s ease-in-out;
         bottom: 0;
         background-color: #ccc;
         border-radius: 20px;
-        transition: 0.4s;
+        transition: background-color 0.4s;
+
         &:before {
           content: "";
           position: absolute;
@@ -270,123 +209,48 @@ $transition: 0.3s ease-in-out;
           bottom: 3px;
           background-color: white;
           border-radius: 50%;
-          transition: 0.4s;
+          transition: transform 0.4s;
         }
       }
+
       input:checked + .slider {
-        background-color: $primary-color;
+        background-color: $text-color;
       }
+
       input:checked + .slider:before {
         transform: translateX(20px);
       }
     }
-  }
-  .difficulty-select {
-    width: 100%;
-    padding: 5px;
-    border-radius: $radius;
-    border: 1px solid $text-color;
-    background: transparent;
-    color: $text-color;
-    transition: color $transition, border-color $transition;
-    &:focus {
-      outline: none;
-      border-color: $primary-color;
-    }
-    &.dark-mode {
-      border-color: $text-dark-color;
-      color: $text-dark-color;
-    }
-  }
-  .categories-select {
-    display: flex;
-    flex-direction: column;
-    label {
-      margin-bottom: 5px;
-      color: $text-color;
-      transition: color $transition;
-      input {
-        margin-right: 5px;
-      }
-    }
-  }
-  .playtime-input {
-    width: 100%;
-    padding: 5px;
-    border-radius: $radius;
-    border: 1px solid $text-color;
-    background: transparent;
-    color: $text-color;
-    transition: color $transition, border-color $transition;
-    &:focus {
-      outline: none;
-      border-color: $primary-color;
-    }
-    &.dark-mode {
-      border-color: $text-dark-color;
-      color: $text-dark-color;
-    }
-  }
-}
 
-/* Tarjeta de Información Adicional */
-.additional-card {
-  .additional-title {
-    font-size: 1.1em;
-    color: $text-color;
-    margin-bottom: 10px;
-    transition: color $transition;
-  }
-  .additional-text {
-    font-size: 0.95em;
-    color: $text-color;
-    transition: color $transition;
-  }
-  .detail-row {
-    display: flex;
-    align-items: center;
-
-    .detail-input {
-      border: none;
-      border-bottom: 1px solid $text-color;
+    .language-select,
+    input[type="number"],
+    input[type="range"] {
+      width: 100%;
+      padding: 5px;
+      border-radius: $radius;
+      border: 1px solid $text-color;
       background: transparent;
       color: $text-color;
-      font-size: inherit;
-      transition: color $transition, border-bottom-color $transition;
+      transition: color 0.3s, border-color 0.3s;
+
       &:focus {
         outline: none;
-        border-bottom-color: $primary-color;
-      }
-    }
-    .edit-btn {
-      background: none;
-      border: none;
-      margin-left: 10px;
-      cursor: pointer;
-      svg {
-        width: 20px;
-        height: 20px;
-        fill: $primary-color;
-        transition: fill $transition;
-      }
-      &:hover svg {
-        fill: darken($primary-color, 10%);
+        border-color: $primary-color;
       }
     }
   }
 }
 
-/* Botón de Guardar Cambios */
 .save-btn {
   width: 100%;
   padding: 10px;
-  background-color: $primary-color;
   border: none;
   border-radius: $radius;
   color: white;
   font-size: 1em;
   cursor: pointer;
-  transition: background-color $transition;
+  transition: background-color 0.3s;
+
   &:hover {
     background-color: darken($primary-color, 10%);
   }

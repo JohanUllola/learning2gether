@@ -1,12 +1,19 @@
 import { createApp } from 'vue';
-import {createPinia} from 'pinia';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
+import './styles/sidebar.scss';
+import './styles/main.scss';
 
+const app = createApp(App);
+const pinia = createPinia();
 
-//import './styles/rules.scss';
-import './styles/variables.scss';
+app.use(pinia);
+app.use(router);
 
+app.mount('#app');
 
-
-createApp(App).use(router).use(createPinia()).mount('#app')
+// Después de montar la aplicación, accede al store y carga el estado del modo oscuro
+import { useConfigStore } from './stores/configStore';
+const configStore = useConfigStore(pinia);
+configStore.loadDarkMode();

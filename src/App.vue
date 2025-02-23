@@ -4,7 +4,7 @@
     <Sidebar />
 
     <!-- Contenedor de contenido donde se mostrará GameGrid -->
-    <div :class="{'dark-mode': configStore.isDarkMode}" class="content">
+    <div  class="content">
      
       <!-- Contenido principal -->
       <router-view />
@@ -14,13 +14,13 @@
 
 <script setup>
 import Sidebar from './components/Sidebar.vue';
-import { useConfigStore } from './stores/configStore.js';
-
+import { useConfigStore } from './stores/configStore';
+const configStore = useConfigStore();
 // Importa los estilos principales
 
 
 // Obtén una instancia del store
-const configStore = useConfigStore();
+//const configStore = useConfigStore();
 </script>
 
 <style lang="scss">

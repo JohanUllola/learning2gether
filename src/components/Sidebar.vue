@@ -50,7 +50,7 @@ import logoURL from '../assets/logo1-01.png'
 import {useUserStore} from'../stores/user';
 import {onAuthStateChanged}from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import '../styles/main.scss';
+import '../styles/Variables-sidebar.scss';
 
 onAuthStateChanged(auth,(user)=>{
 	console.log(user);

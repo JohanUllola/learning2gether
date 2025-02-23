@@ -1,12 +1,16 @@
-// Colores
-$color-primary: #6C63FF;
-$color-secondary: #FF9F1C;
-$color-cloud: #F8F9FA;
-$color-dark: #2D3436;
-$color-gray: #636E72;
-$color-online: #00B894;
-$color-away: #FDCB6E;
-$color-busy: #D63031;
-$color-offline: #B2BEC3;
+// Variables de colores
 
 
+// Variables de tema claro y oscuro
+$bg-light: #f5f7fa;
+$bg-dark: #2c3e50; // Fondo general en modo oscuro
+$card-bg: #ffffff;
+$card-dark-bg: #34495e; // Fondo de tarjeta en modo oscuro
+$text-color: #333333;
+$text-dark-color: #ecf0f1; // Texto en modo oscuro
+$primary-color: #4caf50;
+
+// Otras variables
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+$radius: 10px;
+$transition: 0.3s ease-in-out;
