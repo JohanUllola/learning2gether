@@ -1,13 +1,12 @@
 <template>
-  <div  class="app">
+  <div class="app">
     <!-- Sidebar: Componente de navegación -->
     <Sidebar />
 
     <!-- Contenedor de contenido donde se mostrará GameGrid -->
-    <div  class="content">
-     
+    <div class="content">
       <!-- Contenido principal -->
-      <router-view  />
+      <router-view />
     </div>
   </div>
 </template>
@@ -16,11 +15,6 @@
 import Sidebar from './components/Sidebar.vue';
 import { useConfigStore } from './stores/configStore';
 const configStore = useConfigStore();
-// Importa los estilos principales
-
-
-// Obtén una instancia del store
-//const configStore = useConfigStore();
 </script>
 
 <style lang="scss">
@@ -41,15 +35,16 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Layout principal: Sidebar fijo y contenido al lado */
 .app {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
-/* Contenedor principal */
+/* Contenedor principal: se desplaza a la derecha para no quedar debajo del sidebar fijo */
 .content {
+  flex: 1;
+  margin-left: 70px; /* Ajusta este valor si el sidebar se expande */
   background: $background-light;
   border-radius: 10px;
   padding: 20px;
@@ -105,5 +100,4 @@ button:hover {
     background: #17a589;
   }
 }
-
 </style>

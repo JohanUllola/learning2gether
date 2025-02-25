@@ -15,6 +15,7 @@ import AchievementSystem from '../components/AchievementSystem.vue';
 import MessageView from '../views/MessageView.vue';
 import Students from '../components/Students.vue';
 import WordGame from '../components/Games/WordGame.vue';
+import Game from '../views/GamesViews/GameIframeViews.vue';
 
 const routes = [
   {
@@ -89,6 +90,13 @@ const routes = [
     component: WordGame,
     meta: { requiresAuth: true }
   },
+  // {
+  //   path: '/gamerow',
+  //   name: 'GameRow',
+  //   component: GameRow,
+  //   meta: { requiresAuth: true }
+  // },
+  
   // Ruta para manejar errores 404
   {
     path: '/:pathMatch(.*)*',

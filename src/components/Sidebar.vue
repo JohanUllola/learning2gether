@@ -137,12 +137,11 @@
 	}
   
 	.main-menu {
-	  
-	  flex-wrap: wrap;
+	  flex: 1;
 	  min-height: 0;
-	  
 	  padding: 0 0.5rem;
 	  height: 100%;
+	  
   
 	  &::-webkit-scrollbar {
 		width: 6px;
@@ -203,7 +202,7 @@
 		  .material-icons {
 			margin-right: 1rem;
 			flex-shrink: 0;
-			font-size: 1.2rem;
+			font-size: 1.4rem;
 		  }
   
 		  .text {
@@ -223,9 +222,10 @@
   
 	.footer-section {
 	  flex-shrink: 0;
-	  padding: 1rem 0.5rem;
-	  border-top: 1px solid rgba(255, 255, 255, 0.1);
+	  padding: 5rem 0.5rem;
+	  //border-top: 1px solid rgba(255, 255, 255, 0.1);
 	  height: 80px;
+	  
   
 	  .menu {
 		margin-bottom: 0.5rem;
