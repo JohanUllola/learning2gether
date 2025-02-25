@@ -1,26 +1,24 @@
 <template>
   <div class="login-container">
     <div class="login-box animate-box">
-      <h2>Hola, <br>Bienvenido.</h2>
-     
+      <h2>Hola, <br />Bienvenido.</h2>
       <form @submit.prevent="handleLogin">
-        <label for="email">Email:</label>        
+        <label for="email">Correo:</label>
         <input
           type="email"
           id="email"
           v-model="email"
-          placeholder="username@email.com"
+          placeholder="correo@example.com"
           required
           class="input-animate"
         />
-
         <label for="password">Contraseña:</label>
         <div class="password-container">
           <input
             :type="showPassword ? 'text' : 'password'"
             id="password"
             v-model="password"
-            placeholder="*********"
+            placeholder="********"
             required
             class="input-animate"
           />
@@ -41,14 +39,12 @@
             </svg>
           </span>
         </div>
-
         <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-
-        <button type="submit" class="btn-animate" >Ingresar</button>
+        <button type="submit" class="btn-animate">Ingresar</button>
       </form>
-
       <div class="register-prompt">
-        <p>¿No tienes una cuenta? 
+        <p>
+          ¿No tienes una cuenta?
           <router-link to="/register" class="register-link">Regístrate</router-link>
         </p>
       </div>
@@ -57,35 +53,43 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import{useUserStore}from'../stores/user';
-import router from '../router';
-
-
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebaseConfig.js'; // Asegúrate de que este archivo exporte tu instancia de Firebase Auth
+import { useUserStore } from '../stores/user';
 
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
-const UserStore= useUserStore();
+const router = useRouter();
+const userStore = useUserStore();
 
-
+onMounted(async () => {
+  // Verificamos si ya hay una sesión activa al montar el componente
+ await onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Actualizamos el store y redirigimos a la página principal
+      userStore.userData = { email: user.email, uid: user.uid };
+      router.push('/');
+    }
+  });
+});
 
 const handleLogin = async () => {
-    if (!email.value || password.value.length < 6) {
-      return alert('llena todos los campos')
-    }
-   await UserStore.loginUser(email.value, password.value);
-   router.push('/');
-   
-   
+  if (!email.value || password.value.length < 6) {
+    return alert('Por favor, llena todos los campos correctamente');
   }
-
-// const handleLogin = () => {
-//   if (email.value && password.value) {
-//     alert('Inicio de sesión exitoso');
-//     router.push('/home');
-//   }
-// };
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+    const user = userCredential.user;
+    userStore.userData = { email: user.email, uid: user.uid };
+    router.push('/');
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    alert("Error de inicio de sesión: " + error.message);
+  }
+};
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value;

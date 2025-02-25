@@ -7,7 +7,7 @@
     <div  class="content">
      
       <!-- Contenido principal -->
-      <router-view />
+      <router-view  />
     </div>
   </div>
 </template>
