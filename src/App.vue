@@ -28,7 +28,6 @@ $background-dark: #1e1e1e;
 $card-background-dark: #2d2d2d;
 $text-color-dark: #f0f0f0;
 
-/* Estilos generales */
 body {
   background-color: $background-light;
   color: $text-color-light;
@@ -41,15 +40,15 @@ body {
   height: 100vh;
 }
 
-/* Contenedor principal: se desplaza a la derecha para no quedar debajo del sidebar fijo */
+/* El margen izquierdo se adapta dinámicamente según la variable CSS --sidebar-width */
 .content {
   flex: 1;
-  margin-left: 70px; /* Ajusta este valor si el sidebar se expande */
+  margin-left: var(--sidebar-width, 60px); /* Valor por defecto: 60px si no se ha definido la variable */
   background: $background-light;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: margin-left 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Tarjetas */
