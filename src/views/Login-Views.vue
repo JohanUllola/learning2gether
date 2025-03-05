@@ -84,7 +84,7 @@ const handleLogin = async () => {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
     const user = userCredential.user;
     userStore.userData = { email: user.email, uid: user.uid };
-    router.push('/');
+    router.push('/home');
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     alert("Error de inicio de sesión: " + error.message);

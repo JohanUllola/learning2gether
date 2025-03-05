@@ -17,6 +17,9 @@ export const useUserStore = defineStore("userStore", {
   }),
 
   actions: {
+    setStudentName(name) {
+      this.studentName = name; // Asegúrate de tener este estado
+    },
     async initializeAuthListener() {
       // Inicializa el listener de autenticación una sola vez
       if (this.authUnsubscribe) return;
@@ -44,6 +47,7 @@ export const useUserStore = defineStore("userStore", {
       try {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         this.userData = { email: user.email, uid: user.uid };
+        
       } catch (error) {
         console.error("Error de inicio de sesión:", error.code, error.message);
         throw error;
@@ -56,6 +60,7 @@ export const useUserStore = defineStore("userStore", {
       try {
         await signOut(auth);
         this.userData = null;
+        router.push('/profile-selection')
       } catch (error) {
         console.error("Error al cerrar sesión:", error.code, error.message);
         throw error;

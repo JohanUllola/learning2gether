@@ -1,160 +1,185 @@
 <template>
-    <div class="profile-selection-container">
-      <h1>¿Quién Va Usar?</h1>
-  
-      <!-- Contenedor de perfiles existentes -->
-      <div class="profiles-box">
-        <div class="profiles">
-          <div
-            v-for="(profile, index) in profiles"
-            :key="index"
-            class="profile"
+  <div class="role-selection-container">
+    <div class="roles-box animate-box">
+      <h2 class="title-animation">¿Quién Va a Usar?</h2>
+      
+      <div class="roles-container">
+        <div class="roles">
+          <button 
+            class="role student-card"
+            @click="selectRole('student')"
+            @keyup.enter="selectRole('student')"
           >
-            <div class="avatar" :style="{ backgroundColor: profile.bgColor }">
-              <img v-if="profile.img" :src="getAvatar(profile.img)" alt="avatar" />
-              <span v-else>{{ profile.initial }}</span>
+            <div class="avatar student animate-float">
+              <span class="role-icon">🎮</span>
             </div>
-            <span class="profile-name">{{ profile.name }}</span>
-          </div>
+            <span class="role-name">Estudiante</span>
+          </button>
   
-          <!-- Opción de "Nuevo" perfil -->
-          <div class="profile">
-            <div class="avatar new">
-              <span class="plus">+</span>
+          <button 
+            class="role teacher-card"
+            @click="selectRole('teacher')"
+            @keyup.enter="selectRole('teacher')"
+          >
+            <div class="avatar teacher animate-float">
+              <span class="role-icon">👩🏫</span>
             </div>
-            <span class="profile-name">Nuevo</span>
-          </div>
+            <span class="role-name">Profesor</span>
+          </button>
         </div>
       </div>
-  
-      <!-- Botón para administrar perfiles -->
-      <button class="manage-button">Administrar Perfiles</button>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const profiles = ref([
-    { name: 'Modesto', bgColor: '#d4a5ff', initial: 'M', img: 'boy.png' },
-    { name: 'Johan', bgColor: '#b185db', initial: 'J', img: 'kid.png' }
-  ]);
-  
-  const getAvatar = (imageName) => {
-    return new URL(`../assets/${imageName}`, import.meta.url).href;
-  };
-  </script>
-  
-  <style scoped>
-  /* Contenedor principal */
-  .profile-selection-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background-color: #d4a5ff;
-    min-height: 100vh;
-    width: 100vw;
-    max-width: 1200px;
-    margin: 0 auto;
+  </div>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const selectRole = (role) => {
+  if (role === 'teacher') {
+    router.push('/login');
+  } else {
+    router.push('/student-name'); // Nueva ruta para estudiantes
   }
+};
+</script>
+
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.role-selection-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: url('../assets/Fondo-login.png') no-repeat center center/cover;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.roles-box {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  color: #2d3748;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   
-  /* Título */
-  .profile-selection-container h1 {
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-  }
-  
-  /* Caja alrededor de los perfiles */
-  .profiles-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-width: 800px;
-    width: 100%;
-  }
-  
-  /* Contenedor de perfiles */
-  .profiles {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  /* Cada perfil */
-  .profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  /* Avatar circular */
-  .avatar {
-    width: 100px;
-    height: 100px;
-    background-color: #ccc;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  h2 {
+    font-weight: 600;
     font-size: 2rem;
-    color: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2rem;
+    color: #4a5568;
+    text-align: center;
+    transform: translateX(-20px);
+    opacity: 0;
+    animation: slideIn 0.8s 0.4s ease-out forwards;
+  }
+}
+
+.roles-container {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  animation: slideIn 1s ease-out;
+}
+
+.roles {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.role {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.5s ease;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.8s ease-out forwards;
+  
+  &:nth-child(2) {
+    animation-delay: 1s;
   }
   
-  .profile:hover .avatar {
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Imagen dentro del avatar */
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* Opción especial para "Nuevo" */
-  .avatar.new {
-    background-color: #b185db;
-  }
-  
-  .plus {
-    font-size: 3rem;
-    color: #6a1b9a;
-  }
-  
-  /* Nombre del perfil */
-  .profile-name {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: #6a1b9a;
-    font-weight: bold;
-  }
-  
-  /* Botón de administración */
-  .manage-button {
-    margin-top: 2rem;
-    padding: 0.6rem 1.5rem;
-    border: none;
-    background-color: #b185db;
-    color: #fff;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .manage-button:hover {
-    background-color: #9d74c2;
+  &:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
-  </style>
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   
+  &.teacher {
+    background: #764ba2;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+  }
+}
+
+.role-icon {
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s ease;
+}
+
+.role:hover .role-icon {
+  transform: scale(1.1);
+}
+
+.role-name {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #4a5568;
+  font-weight: 600;
+  transition: color 0.5s ease;
+}
+
+.role:hover .role-name {
+  color: #2d3748;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>

@@ -48,11 +48,12 @@ const is_expanded = ref(localStorage.getItem('is_expanded') === 'true')
   
 // Unificamos todos los elementos del menú en una sola lista
 const allMenuItems = [
-	{ path: '/', icon: 'home', text: 'Inicio' },
+	{ path: '/home', icon: 'home', text: 'Inicio' },
 	{ path: '/profile', icon: 'description', text: 'Perfil' },
 	{ path: '/students', icon: 'school', text: 'Estudiantes' },
 	{ path: '/messages', icon: 'email', text: 'Mensajes' },
 	{ path: '/goal', icon: 'flag', text: 'Logros' },
+	{ path: '/stats', icon: 'bar_chart', text: 'Estadísticas' }, 
 	{ path: '/notify', icon: 'notifications', text: 'Notificaciones' },
 	{ path: '/config', icon: 'settings', text: 'Configuración' }
 ]

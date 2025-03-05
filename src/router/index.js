@@ -15,7 +15,10 @@ import AchievementSystem from '../components/AchievementSystem.vue';
 import MessageView from '../views/MessageView.vue';
 import Students from '../components/Students.vue';
 import WordGame from '../components/Games/WordGame.vue';
-import Game from '../views/GamesViews/GameIframeViews.vue';
+import StatisticsView from '../views/StatisticsView.vue';
+import GameMomory from '../components/Games/GameIframe.vue';
+import Gameframe2 from '../components/Games/gameframe2.vue';
+import Gameframe3 from '../components/Games/gameframe3.vue';
 
 const routes = [
   {
@@ -34,7 +37,7 @@ const routes = [
     path: '/profile-selection',
     name: 'ProfileSelection',
     component: ProfileSelection,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/teacher',
@@ -85,17 +88,40 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/student-name',
+    name: 'StudentName',
+    component: () => import('../components/StudentName.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
     path: '/wordgame',
     name: 'WordGame',
     component: WordGame,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/GameMomory',
+    name: 'GameMomory',
+    component: GameMomory,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/GameOneline',
+    name: 'GameOnelIne',
+    component: Gameframe2,
+    meta: { requiresAuth: false }
+  }, {
+    path: '/Gamefracciones',
+    name: 'Gamefracciones',
+    component: Gameframe3,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/stats',
+    name: 'stadistics',
+    component: StatisticsView,
     meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/gamerow',
-  //   name: 'GameRow',
-  //   component: GameRow,
-  //   meta: { requiresAuth: true }
-  // },
   
   // Ruta para manejar errores 404
   {
@@ -126,7 +152,7 @@ router.beforeEach(async (to, from, next) => {
 
     // Redirigir usuarios no autenticados que intentan acceder a rutas protegidas
     if (isAuthRequired && !user) {
-      next('/login');
+      next('/profile-selection');
       return;
     }
 

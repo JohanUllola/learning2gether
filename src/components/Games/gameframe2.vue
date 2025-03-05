@@ -1,6 +1,13 @@
 <template>
     <div class="game-container">
-      <iframe id="playframe" width="1000" height="600" frameborder="0" scrolling="no" allowfullscreen="true" src="https://www.digipuzzle.net/minigames/makeanynumber/makeanynumber.htm?language=spanish"></iframe>
+        <iframe 
+  src=https://www.cokitos.com/dibuja-con-1-linea/play/
+  width="100%" 
+  height="600" 
+  frameborder="0" 
+  allowfullscreen>
+</iframe>
+
     </div>
   </template>
   
