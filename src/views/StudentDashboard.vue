@@ -28,11 +28,16 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const studentName = ref('');
 
+const importImage = (name) => 
+  new URL(`../assets/${name}`, import.meta.url).href;
+
 const games = ref([
-  { id: 1, name: "Memoria Numérica", image: "/game1.png", route: "/memory-game" },
-  { id: 2, name: "Línea Única", image: "/game2.png", route: "/line-game" },
-  { id: 3, name: "Fracciones", image: "/game3.png", route: "/fractions" },
-  { id: 4, name: "Pop", image: "/game4.png", route: "/pop-game" },
+{ id: 1, name: "Game Numbers", image: importImage('cartasgame.jpg'), route: '/GameMomory' },
+  { id: 2, name: "One Line", image: importImage('juegohabilidad.jpg'), route: '/GameOneline' },
+  { id: 3, name: "Game Fracciones", image: importImage('gamefracciones.jpg'), route: '/Gamefracciones' },
+  { id: 4, name: "Pop", image: importImage('pop.png'), route: '/rutaPop' },
+  { id: 5, name: "123456", image: importImage('123456.png'), route: '/ruta123456' },
+  { id: 6, name: "TicTacToe", image: importImage('ballon.png'), route: '/rutaTicTacToe' },
 ]);
 
 const loadStudentData = () => {

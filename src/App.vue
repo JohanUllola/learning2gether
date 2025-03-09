@@ -4,7 +4,7 @@
     <Sidebar />
 
     <!-- Contenedor de contenido donde se mostrará GameGrid -->
-    <div class="content">
+    <div class="contents">
       <!-- Contenido principal -->
       <router-view />
     </div>
@@ -37,16 +37,16 @@ body {
 /* Layout principal: Sidebar fijo y contenido al lado */
 .app {
   display: flex;
-  height: 100vh;
+  //height: 100vh;
 }
 
 /* El margen izquierdo se adapta dinámicamente según la variable CSS --sidebar-width */
-.content {
+.contents {
   flex: 1;
-  margin-left: var(--sidebar-width, 60px); /* Valor por defecto: 60px si no se ha definido la variable */
+  //margin-left: var(--sidebar-width, 60px); /* Valor por defecto: 60px si no se ha definido la variable */
   background: $background-light;
   border-radius: 10px;
-  padding: 20px;
+  //padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: margin-left 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
