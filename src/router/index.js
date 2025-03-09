@@ -34,6 +34,28 @@ const routes = [
     meta: { guestOnly: true }
   },
   {
+    path: '/reset-password-email',
+    name: 'ResetPassword',
+    component: () => import('../views/ResetPassword.vue'),
+    meta: { guestOnly: false }
+  },
+  {
+    path: '/auth/action',
+    name: 'AuthAction',
+    component: () => import('../views/AuthActionHandler.vue')
+  },
+  {
+    path: '/reset-password',
+    name: 'CustomResetPassword',
+    component: () => import('../views/CustomResetPassword.vue')
+  },
+  {
+    path: '/password-reset-success',
+    name: 'PasswordResetSuccess',
+    component: () => import('../views/PasswordResetSuccess.vue')
+  },
+  
+  {
     path: '/profile-selection',
     name: 'ProfileSelection',
     component: ProfileSelection,
@@ -121,6 +143,12 @@ const routes = [
     name: 'stadistics',
     component: StatisticsView,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/student-dashboard',
+    name: 'StudentDashboard',
+    component: () => import('../views/StudentDashboard.vue'),
+    meta: { requiresAuth: false }
   },
   
   // Ruta para manejar errores 404

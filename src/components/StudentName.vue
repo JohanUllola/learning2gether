@@ -18,6 +18,7 @@
                 required
                 class="name-input"
                 :class="{ 'input-error': errorMessage }"
+                maxlength="50"
               />
               <transition name="slide-fade">
                 <div v-if="errorMessage" class="error-message">
@@ -40,36 +41,37 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/user';
 
 const router = useRouter();
-const userStore = useUserStore();
 const studentName = ref('');
 const errorMessage = ref('');
 
-const submitName = () => {
-  const trimmedName = studentName.value.trim();
-  
-  if (!trimmedName) {
-    errorMessage.value = 'Por favor ingresa tu nombre antes de continuar';
-    return;
-  }
-  
-  if (trimmedName.length > 50) {
-    errorMessage.value = 'El nombre no puede exceder los 50 caracteres';
-    return;
-  }
+const validateName = (name) => {
+  if (!name.trim()) return 'Por favor ingresa tu nombre';
+  if (name.length > 50) return 'Máximo 50 caracteres';
+  if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(name)) return 'Solo letras y espacios';
+  return null;
+};
 
-  // Simulación de guardado en store
-  userStore.setStudentName(trimmedName);
+const submitName = () => {
+  const error = validateName(studentName.value);
+  if (error) {
+    errorMessage.value = error;
+    return;
+  }
   
-  // Limpiar errores y redirigir
-  errorMessage.value = '';
-  router.push('/wordgame');
+  // Guardar en localStorage y navegar
+  localStorage.setItem('studentData', JSON.stringify({
+    name: studentName.value.trim(),
+    timestamp: new Date().getTime()
+  }));
+  
+  router.push('/student-dashboard');
 };
 </script>
 
 <style lang="scss" scoped>
+/* Mantener los mismos estilos que tenías originalmente */
 .main-container {
   min-height: 100vh;
   display: grid;
@@ -130,10 +132,6 @@ const submitName = () => {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
   }
 
-  &::placeholder {
-    color: #a0aec0;
-  }
-
   &.input-error {
     border-color: #fc8181;
     box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.2);
@@ -180,7 +178,6 @@ const submitName = () => {
   font-size: 1.4rem;
 }
 
-// Animaciones
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
