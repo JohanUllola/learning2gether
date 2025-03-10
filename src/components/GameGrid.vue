@@ -50,7 +50,7 @@ const games = [
     id: 1, 
     name: "Game Numbers", 
     image: importImage('cartasgame.jpg'), 
-    route: '/GameMomory', 
+    route: '/GameMemory', 
     available: true 
   },
   { 
