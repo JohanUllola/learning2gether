@@ -90,50 +90,54 @@ const submitName = () => {
 </script>
 
 <style lang="scss" scoped>
-html, body {
+html, body, #app {
+  height: 100%;
   margin: 0;
   padding: 0;
-  
+  overflow: hidden;
 }
 
-
 .main-container {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   display: grid;
   place-items: center;
   background: 
     linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
-    url('../assets/Fondo-login.png') center/cover no-repeat;
-  padding: 40px !important;
-  margin: -100px !important;
-  text-align: center;
-  animation: fadeInBackground 1.5s ease-out;
-  width: calc(100% + 120px) !important;
-}
-
-@keyframes fadeInBackground {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    url('../assets/Fondo-login.png') center/cover no-repeat fixed;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 .grid-container {
-  width: calc(100% + 60px) !important;
+  width: 100%;
   max-width: 1200px;
-  margin: 20 0 0 -30px !important;
+  max-height: 100vh;
+  padding: 20px 20px 80px;
+  margin-bottom: -80px;
+  overflow-y: auto;
   
+  /* Ocultar scrollbar para todos los navegadores */
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .name-card {
   background: rgba(255, 255, 255, 0.98);
   border-radius: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 20px !important;
+  padding: 2rem;
   max-width: 480px;
-  margin: 0 auto !important;
+  margin: 0 auto 40px;
   transition: transform 0.3s ease;
   animation: popIn 0.6s ease-out;
-  position: relative;
-  left: -30px;
   
   &:hover {
     transform: translateY(-5px);
@@ -154,7 +158,6 @@ html, body {
     font-weight: 600;
     margin: 0;
     animation: slideDown 0.6s ease-out;
-    padding-left: 30px !important;
   }
 }
 
@@ -165,19 +168,17 @@ html, body {
 
 .input-group {
   margin-bottom: 1.5rem;
-  padding-right: 30px !important;
 }
 
 .name-input {
-  width: calc(100% - 40px) !important;
-  padding: 1rem !important;
+  width: 100%;
+  padding: 1rem;
   border: 2px solid #cbd5e0;
   border-radius: 0.75rem;
   font-size: 1.1rem;
   transition: all 0.3s ease;
   background: #fff;
   color: #2d3748;
-  margin-left: 20px !important;
   
   &:focus {
     outline: none;
@@ -194,16 +195,16 @@ html, body {
 .error-message {
   color: #e53e3e;
   font-size: 0.9rem;
-  margin: 0.5rem 0 0 20px !important;
+  margin: 0.5rem 0 0;
   padding: 0.5rem;
   background: #fff5f5;
   border-radius: 0.5rem;
-  width: calc(100% - 40px) !important;
+  width: 100%;
 }
 
 .submit-button {
-  width: calc(100% - 40px) !important;
-  padding: 1rem !important;
+  width: 100%;
+  padding: 1rem;
   background: #667eea;
   color: white;
   border: none;
@@ -216,7 +217,6 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-left: 20px !important;
   
   &:hover {
     background: #553c9a;
@@ -247,11 +247,10 @@ html, body {
 
 .info-message {
   margin-top: 2rem;
-  padding: 1rem 1rem 1rem 30px !important;
+  padding: 1rem;
   background: rgba(245, 245, 245, 0.95);
   border-radius: 1rem;
   animation: fadeIn 0.6s ease-out;
-  width: calc(100% - 40px) !important;
 }
 
 .access-warning {
@@ -264,7 +263,7 @@ html, body {
 .benefits-list {
   text-align: left;
   margin: 1.5rem 0;
-  padding-left: 1rem !important;
+  padding-left: 1rem;
   color: #4a5568;
   
   li {
@@ -289,11 +288,10 @@ html, body {
   flex-direction: column;
   gap: 1rem;
   margin-top: 1.5rem;
-  padding-right: 30px !important;
 }
 
 .auth-link {
-  padding: 0.75rem 1.5rem !important;
+  padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
   text-decoration: none;
   font-weight: 600;
@@ -317,44 +315,22 @@ html, body {
 }
 
 @media (max-width: 640px) {
-  .main-container {
-    padding: 15px !important;
-    margin-left: -30px !important;
-    width: calc(100% + 60px) !important;
-  }
-  
   .grid-container {
-    width: calc(100% + 30px) !important;
-    margin-left: -15px !important;
+    padding: 0 15px 60px;
+    margin-bottom: -60px;
   }
   
   .name-card {
-    padding: 15px !important;
-    left: -15px;
+    padding: 1.5rem;
+    margin-bottom: 30px;
   }
   
   .header h1 {
     font-size: 1.75rem;
-    padding-left: 15px !important;
   }
   
-  .auth-links {
-    padding-right: 15px !important;
-  }
-  
-  .benefits-list {
-    padding-left: 0.5rem !important;
-    
-    li {
-      font-size: 0.85rem;
-    }
-  }
-  
-  .name-input,
-  .submit-button,
-  .info-message {
-    width: calc(100% - 30px) !important;
-    margin-left: 15px !important;
+  .benefits-list li {
+    font-size: 0.85rem;
   }
 }
 </style>

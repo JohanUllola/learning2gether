@@ -155,7 +155,7 @@ onMounted(() => {
   min-height: 100vh;
   position: relative;
   max-width: 1200px;
-  margin: 0 auto;
+  //margin: 0 auto;
 }
 
 .header {
