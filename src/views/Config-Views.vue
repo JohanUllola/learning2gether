@@ -70,6 +70,7 @@ const saveSettings = () => {
 .config-wrapper {
   background-color: $bg-light;
   min-height: 100vh;
+  margin-left: var(--sidebar-width, 60px);
   padding: 20px;
   display: flex;
   align-items: center;

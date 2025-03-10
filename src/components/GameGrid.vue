@@ -115,7 +115,7 @@ const handleRetry = () => {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   padding: 20px;
-  margin-left: 60px;
+  margin-left: var(--sidebar-width, 60px);
   transition: background-color 0.3s ease, color 0.3s ease;
   
   &.dark-mode {

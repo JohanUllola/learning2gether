@@ -127,6 +127,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: auto;
   font-family: 'Roboto', sans-serif;
+  margin-left: var(--sidebar-width, 60px);
 }
 
 .header h2 {

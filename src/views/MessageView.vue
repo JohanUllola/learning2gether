@@ -171,6 +171,7 @@ const makeDraggable = () => {
   padding: 2rem;
   background: #f9fafb;
   font-family: 'Fira Sans', sans-serif;
+  margin-left: var(--sidebar-width, 60px);
 
   .header-title {
     text-align: center;

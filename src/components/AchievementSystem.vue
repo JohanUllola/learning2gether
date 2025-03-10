@@ -37,6 +37,7 @@ const achievements = ref([
   background: #f1f5f9;
   min-height: 100vh;
   font-family: 'Fira Sans', sans-serif;
+  margin-left: var(--sidebar-width, 60px);
 
   .header-title {
     text-align: center;
