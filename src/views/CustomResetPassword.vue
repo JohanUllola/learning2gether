@@ -74,9 +74,15 @@ const handleSubmit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   background: url('../assets/Fondo-login.png') no-repeat center center/cover;
   animation: gradientShift 15s ease infinite alternate;
+  position: fixed;
+  top: 0;
+  left: 0;
+  
 }
 
 /* Caja del formulario */

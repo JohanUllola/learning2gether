@@ -44,7 +44,7 @@ body {
 /* Layout principal: Sidebar fijo y contenido al lado */
 .app {
   display: flex;
-  //height: 100vh;
+  
 }
 
 /* El margen izquierdo se adapta dinámicamente según la variable CSS --sidebar-width */
