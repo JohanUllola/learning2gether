@@ -19,6 +19,7 @@ import StatisticsView from '../views/StatisticsView.vue';
 import GameMomory from '../components/Games/GameIframe.vue';
 import Gameframe2 from '../components/Games/gameframe2.vue';
 import Gameframe3 from '../components/Games/gameframe3.vue';
+import Gameframe4 from '../components/Games/gameframe4.vue';
 
 const routes = [
   {
@@ -122,20 +123,27 @@ const routes = [
     meta: { requiresAuth: false }
   },
   {
-    path: '/GameMomory',
+    path: '/GameMemory',
     name: 'GameMomory',
     component: GameMomory,
     meta: { requiresAuth: false }
   },
   {
-    path: '/GameOneline',
-    name: 'GameOnelIne',
+    path: '/Gamebraintest',
+    name: 'GameBrainTest',
     component: Gameframe2,
     meta: { requiresAuth: false }
-  }, {
-    path: '/Gamefracciones',
-    name: 'Gamefracciones',
+  }, 
+  {
+    path: '/GameLittleAlchemy2',
+    name: 'GameLittleAlchemy2',
     component: Gameframe3,
+    meta: { requiresAuth: false }
+  },
+  , {
+    path: '/GameArithmetic',
+    name: 'GameArithmetic',
+    component: Gameframe4,
     meta: { requiresAuth: false }
   },
   {

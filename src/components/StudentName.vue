@@ -90,6 +90,13 @@ const submitName = () => {
 </script>
 
 <style lang="scss" scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  
+}
+
+
 .main-container {
   min-height: 100vh;
   display: grid;
@@ -97,8 +104,8 @@ const submitName = () => {
   background: 
     linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     url('../assets/Fondo-login.png') center/cover no-repeat;
-  padding: 20px !important;
-  margin-left: -60px !important;
+  padding: 40px !important;
+  margin: -100px !important;
   text-align: center;
   animation: fadeInBackground 1.5s ease-out;
   width: calc(100% + 120px) !important;
@@ -112,7 +119,8 @@ const submitName = () => {
 .grid-container {
   width: calc(100% + 60px) !important;
   max-width: 1200px;
-  margin: 0 0 0 -30px !important;
+  margin: 20 0 0 -30px !important;
+  
 }
 
 .name-card {

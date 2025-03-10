@@ -141,7 +141,12 @@ watch(is_expanded, (newVal) => {
 	  gap: 0.5rem;
 	  padding: 0 0.5rem;
 	  margin-top: 0.8rem;
+	  overflow-y: scroll;
+  	 scrollbar-width: none; 
 	}
+	.menu-container::-webkit-scrollbar {
+  display: none;
+}
   
 	.button {
 	  display: flex;

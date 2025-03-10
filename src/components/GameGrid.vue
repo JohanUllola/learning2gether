@@ -31,12 +31,48 @@ const importImage = (name) =>
   new URL(`../assets/${name}`, import.meta.url).href;
 
 const games = [
-  { id: 1, name: "Game Numbers", image: importImage('cartasgame.jpg'), route: '/GameMomory' },
-  { id: 2, name: "One Line", image: importImage('juegohabilidad.jpg'), route: '/GameOneline' },
-  { id: 3, name: "Game Fracciones", image: importImage('gamefracciones.jpg'), route: '/Gamefracciones' },
-  { id: 4, name: "Pop", image: importImage('pop.png'), route: '/rutaPop' },
-  { id: 5, name: "123456", image: importImage('123456.png'), route: '/ruta123456' },
-  { id: 6, name: "TicTacToe", image: importImage('ballon.png'), route: '/rutaTicTacToe' },
+{ 
+    id: 1, 
+    name: "Game Numbers", 
+    image: importImage('cartasgame.jpg'), 
+    route: '/GameMemory', 
+    available: true 
+  },
+  { 
+    id: 2, 
+    name: "Brain Test", 
+    image: importImage('braintest.png'), 
+    route: '/Gamebraintest', 
+    available: true 
+  },
+  { 
+    id: 3, 
+    name: "LittleAlchemy2", 
+    image: importImage('LittleAlchemy2.png'), 
+    route: '/GameLittleAlchemy2', 
+    available: true 
+  },
+  { 
+    id: 4, 
+    name: "Arithmetic", 
+    image: importImage('Arithmetic.png'), 
+    route: '/GameArithmetic', 
+    available: true 
+  },
+  { 
+    id: 5, 
+    name: "123456", 
+    image: importImage('123456.png'), 
+    route: '/ruta123456', 
+    available: false 
+  },
+  { 
+    id: 6, 
+    name: "TicTacToe", 
+    image: importImage('ballon.png'), 
+    route: '/rutaTicTacToe', 
+    available: false 
+  }
 ];
 
 const openGame = (game) => {
@@ -52,6 +88,7 @@ const openGame = (game) => {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   padding: 20px;
+  margin-left: auto;
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &.dark-mode {

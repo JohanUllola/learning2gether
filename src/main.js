@@ -4,6 +4,8 @@ import App from './App.vue';
 import router from './router';
 import './styles/sidebar.scss';
 import './styles/main.scss';
+//import './styles/rules.scss';
+
 
 const app = createApp(App);
 const pinia = createPinia();
