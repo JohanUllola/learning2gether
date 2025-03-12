@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search-container">
+    <div v-if="!$route.meta.hideSearchBar" class="search-container">
       <div class="search-bar">
         <input
           type="text"
@@ -34,7 +34,6 @@
         </div>
       </div>
     </div>
-    <!-- Vista de juego no disponible -->
     <GameUnavailable v-else @retry="handleRetry" />
   </div>
 </template>
@@ -121,7 +120,6 @@ const handleGameClick = (game) => {
 
 const handleRetry = () => {
   gameUnavailable.value = false;
-  // Lógica adicional de reintento podría ir aquí
 };
 
 const filteredGames = computed(() => {
@@ -172,6 +170,10 @@ const filteredGames = computed(() => {
     &::placeholder {
       color: #999999;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .search-button {
@@ -182,6 +184,10 @@ const filteredGames = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .search-icon {
@@ -216,12 +222,20 @@ const filteredGames = computed(() => {
   flex-direction: column;
   align-items: center;
   position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
-  
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px transparent;
+  }
+
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -233,12 +247,12 @@ const filteredGames = computed(() => {
   
   img {
     width: 100%;
-    height: 80%;
+    height: 100%;
     object-fit: cover;
     display: block;
     cursor: pointer;
-    max-width: 150px; /* Añadido para limitar el tamaño máximo */
-    max-height: 150px; /* Añadido para limitar el tamaño máximo */
+    max-width: 150px;
+    max-height: 150px;
   }
 }
 
@@ -264,5 +278,16 @@ const filteredGames = computed(() => {
   font-size: 0.9rem;
   font-weight: bold;
   border-radius: 15px;
+}
+
+/* Mejora de accesibilidad para navegación con teclado */
+.game-card:focus-visible {
+  box-shadow: 0 0 0 2px #2196f3;
+}
+
+/* Eliminar outline en todos los elementos interactivos */
+button:focus,
+input:focus {
+  outline: none;
 }
 </style>

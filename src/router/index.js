@@ -20,6 +20,7 @@ import GameMomory from '../components/Games/GameIframe.vue';
 import Gameframe2 from '../components/Games/gameframe2.vue';
 import Gameframe3 from '../components/Games/gameframe3.vue';
 import Gameframe4 from '../components/Games/gameframe4.vue';
+import GameGrid from '../components/GameGrid.vue';
 
 const routes = [
   {
@@ -72,7 +73,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children:[
+      {
+        path: 'games',
+        name: 'GameGrid',
+        component: GameGrid,
+        meta:{requiresAuth: false, hideSearchBar: false}
+        
+      },
+    ]
   },
   {
     path: '/profile',
