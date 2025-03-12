@@ -6,6 +6,7 @@
     <!-- Contenedor de contenido donde se mostrará GameGrid -->
     <div :class="['content', { 'sidebar-expanded': isSidebarExpanded }]">
       <!-- Contenido principal -->
+      
       <router-view/>
     </div>
   </div>
@@ -14,6 +15,7 @@
 <script setup>
 import { ref } from 'vue';
 import Sidebar from '../components/Sidebar.vue';
+import GameGrid from '../components/GameGrid.vue';
 import { useConfigStore } from '../stores/configStore';
 
 
