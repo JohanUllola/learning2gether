@@ -17,65 +17,67 @@
 	  <!-- Contenedor unificado para todos los elementos del menú -->
 	  <div class="menu-container">
 		<router-link 
-			v-for="item in allMenuItems" 
-			:key="item.path" 
-			:to="item.path" 
-			class="button"
-			:class="{ active: $route.path === item.path }"
+		  v-for="item in allMenuItems" 
+		  :key="item.path" 
+		  :to="item.path" 
+		  class="button"
+		  :class="{ active: $route.path === item.path }"
 		>
-			<span class="material-icons">{{ item.icon }}</span>
-			<span v-show="is_expanded" class="text">{{ item.text }}</span>
+		  <span class="material-icons">{{ item.icon }}</span>
+		  <span v-show="is_expanded" class="text">{{ item.text }}</span>
 		</router-link>
   
 		<!-- Botón de logout -->
 		<button class="button" @click="userStore.logoutUser">
-			<span class="material-icons">logout</span>
-			<span v-show="is_expanded" class="text">Cerrar sesión</span>
+		  <span class="material-icons">logout</span>
+		  <span v-show="is_expanded" class="text">Cerrar sesión</span>
 		</button>
 	  </div>
 	</aside>
-</template>
+  </template>
   
-<script setup>
-import { ref, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import logoURL from '../assets/logo1-01.png'
-import { useUserStore } from '../stores/user'
-  
-const userStore = useUserStore()
-const route = useRoute()
-const is_expanded = ref(localStorage.getItem('is_expanded') === 'true')
-  
-// Unificamos todos los elementos del menú en una sola lista
-const allMenuItems = [
+  <script setup>
+  import { ref, watch, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import logoURL from '../assets/logo1-01.png'
+  import { useUserStore } from '../stores/user'
+	
+  const userStore = useUserStore()
+  const route = useRoute()
+  const is_expanded = ref(localStorage.getItem('is_expanded') === 'true')
+	
+  // Unificamos todos los elementos del menú en una sola lista
+  const allMenuItems = [
 	{ path: '/home', icon: 'home', text: 'Inicio' },
 	{ path: '/profile', icon: 'description', text: 'Perfil' },
 	{ path: '/students', icon: 'school', text: 'Estudiantes' },
 	{ path: '/messages', icon: 'email', text: 'Mensajes' },
 	{ path: '/goal', icon: 'flag', text: 'Logros' },
 	{ path: '/stats', icon: 'bar_chart', text: 'Estadísticas' }, 
+	{ path: '/Report', icon: 'assessment', text: 'Reportes' },
 	{ path: '/notify', icon: 'notifications', text: 'Notificaciones' },
 	{ path: '/config', icon: 'settings', text: 'Configuración' }
-]
-  
-const ToggleMenu = () => {
+	
+  ]
+	
+  const ToggleMenu = () => {
 	is_expanded.value = !is_expanded.value
 	localStorage.setItem('is_expanded', is_expanded.value)
-}
-  
-// Al montar el componente, establecemos la variable CSS según el estado inicial
-onMounted(() => {
-  document.documentElement.style.setProperty('--sidebar-width', is_expanded.value ? '200px' : '50px')
-})
-  
-// Actualizamos la variable CSS cada vez que is_expanded cambie
-watch(is_expanded, (newVal) => {
-  document.documentElement.style.setProperty('--sidebar-width', newVal ? '200px' : '50px')
-})
-</script>
-  
-<style scoped lang="scss">
-.sidebar {
+  }
+	
+  // Al montar el componente, establecemos la variable CSS según el estado inicial
+  onMounted(() => {
+	document.documentElement.style.setProperty('--sidebar-width', is_expanded.value ? '200px' : '50px')
+  })
+	
+  // Actualizamos la variable CSS cada vez que is_expanded cambie
+  watch(is_expanded, (newVal) => {
+	document.documentElement.style.setProperty('--sidebar-width', newVal ? '200px' : '50px')
+  })
+  </script>
+	
+  <style scoped lang="scss">
+  .sidebar {
 	background: #2c3e50;
 	color: white;
 	width: 50px;
@@ -87,11 +89,11 @@ watch(is_expanded, (newVal) => {
 	z-index: 1000;
 	overflow: hidden;
 	font-family: 'Roboto', sans-serif;
-
+  
 	&.is-expanded {
 	  width: 200px;
 	}
-
+  
 	.header-section {
 	  flex-shrink: 0;
 	  padding: 0.8rem;
@@ -133,7 +135,7 @@ watch(is_expanded, (newVal) => {
 		}
 	  }
 	}
-
+  
 	.menu-container {
 	  flex: 1;
 	  display: flex;
@@ -142,11 +144,11 @@ watch(is_expanded, (newVal) => {
 	  padding: 0 0.5rem;
 	  margin-top: 0.8rem;
 	  overflow-y: scroll;
-  	 scrollbar-width: none; 
+	  scrollbar-width: none; 
 	}
 	.menu-container::-webkit-scrollbar {
-  display: none;
-}
+	  display: none;
+	}
   
 	.button {
 	  display: flex;
@@ -189,5 +191,5 @@ watch(is_expanded, (newVal) => {
 		margin-right: 0.5rem;
 	  }
 	}
-}
-</style>
+  }
+  </style>

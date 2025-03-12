@@ -1,120 +1,3 @@
-<template>
-  <div class="login-container">
-    <ErrorPopup 
-      :message="errorMessage" 
-      :is-visible="isErrorVisible" 
-      @close="isErrorVisible = false"
-    />
-
-    <div class="login-box animate-box">
-    <button class="back-button" @click="goBack">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-      </button>
-    
-      <h2>Hola, <br />Bienvenido.</h2>
-      <form @submit.prevent="handleLogin">
-        <div class="input-group">
-          <label for="email">Correo:</label>
-          <input
-            type="email"
-            id="email"
-            v-model="email"
-            placeholder="correo@example.com"
-            required
-            class="input-animate"
-            :class="{ 'input-error': invalidEmail }"
-            @input="validateEmail"
-          />
-          <span v-if="invalidEmail" class="error-message">Correo electrónico inválido</span>
-        </div>
-
-        <div class="input-group">
-          <label for="password">Contraseña:</label>
-          <div class="password-container">
-            <input
-              :type="showPassword ? 'text' : 'password'"
-              id="password"
-              v-model="password"
-              placeholder="********"
-              required
-              class="input-animate"
-              :class="{ 'input-error': invalidPassword }"
-              @input="validatePassword"
-            />
-            <span class="eye-icon" @click="togglePassword" @mousedown.prevent>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            </span>
-          </div>
-          <span v-if="invalidPassword" class="error-message">Mínimo 6 caracteres requeridos</span>
-        </div>
-        
-        <router-link to="/reset-password-email" class="forgot-password">
-  ¿Olvidaste tu contraseña?
-</router-link>
-
-        <button 
-          type="submit" 
-          class="btn-animate"
-          :disabled="isLoading || invalidEmail || invalidPassword"
-        >
-          <span v-if="!isLoading">Ingresar</span>
-          <div v-else class="spinner"></div>
-        </button>
-      </form>
-       <!-- Sección de Login con Google -->
-       <div class="social-login">
-        <div class="separator">
-          <span class="line"></span>
-          <span class="text">o continúa con</span>
-          <span class="line"></span>
-        </div>
-        
-        <button 
-          class="google-btn btn-animate"
-          @click="handleGoogleLogin"
-          :disabled="isLoading"
-        >
-          <svg class="google-icon" viewBox="0 0 24 24">
-            <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"/>
-          </svg>
-          Ingresar con Google
-        </button>
-      </div>
-      <div class="register-prompt">
-        <p>
-          ¿No tienes una cuenta?
-          <router-link to="/register" class="register-link">Regístrate</router-link>
-        </p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -122,6 +5,8 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig.js';
 import { useUserStore } from '../stores/user';
 import ErrorPopup from '../components/ErrorPopup.vue';
+import {useRoute} from 'vue-router'
+import YolfryBtn from '../components/yolfryBtn.vue';
 
 const email = ref('');
 const password = ref('');
@@ -138,7 +23,12 @@ const goBack = () => {
   router.push('/profile-selection'); // o router.go(-1) para volver a la página anterior
 };
 
+const route = useRoute()
+
 onMounted(async () => {
+
+  console.log(route.params)
+
   await onAuthStateChanged(auth, (user) => {
     if (user) {
       userStore.userData = { email: user.email, uid: user.uid };
@@ -181,7 +71,7 @@ const showError = (message) => {
 
 const handleLogin = async () => {
   if (invalidEmail.value || invalidPassword.value) return;
-  
+
   try {
     isLoading.value = true;
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
@@ -213,6 +103,87 @@ const togglePassword = () => {
 };
 </script>
 
+<template>
+  <div class="login-container">
+    <ErrorPopup :message="errorMessage" :is-visible="isErrorVisible" @close="isErrorVisible = false" />
+
+    <!-- <YolfryBtn :title="$route.params.met">
+       <template v-slot>Hola</template>
+       <template v-slot:title3>
+        Holab
+       </template>
+    </YolfryBtn> -->
+
+    <div class="login-box animate-box">
+      <button class="back-button" @click="goBack">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <h2>Hola, <br />Bienvenido.</h2>
+      <form @submit.prevent="handleLogin">
+        <div class="input-group">
+          <label for="email">Correo:</label>
+          <input type="email" id="email" v-model="email" placeholder="correo@example.com" required class="input-animate"
+            :class="{ 'input-error': invalidEmail }" @input="validateEmail" />
+          <span v-if="invalidEmail" class="error-message">Correo electrónico inválido</span>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Contraseña:</label>
+          <div class="password-container">
+            <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" placeholder="********"
+              required class="input-animate" :class="{ 'input-error': invalidPassword }" @input="validatePassword" />
+            <span class="eye-icon" @click="togglePassword" @mousedown.prevent>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </span>
+          </div>
+          <span v-if="invalidPassword" class="error-message">Mínimo 6 caracteres requeridos</span>
+        </div>
+
+        <router-link to="/reset-password-email" class="forgot-password">
+          ¿Olvidaste tu contraseña?
+        </router-link>
+
+        <button type="submit" class="btn-animate" :disabled="isLoading || invalidEmail || invalidPassword">
+          <span v-if="!isLoading">Ingresar</span>
+          <div v-else class="spinner"></div>
+        </button>
+      </form>
+      <!-- Sección de Login con Google -->
+      <div class="social-login">
+        <div class="separator">
+          <span class="line"></span>
+          <span class="text">o continúa con</span>
+          <span class="line"></span>
+        </div>
+
+        <button class="google-btn btn-animate" @click="handleGoogleLogin" :disabled="isLoading">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path
+              d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
+          </svg>
+          Ingresar con Google
+        </button>
+      </div>
+      <div class="register-prompt">
+        <p>
+          ¿No tienes una cuenta?
+          <router-link to="/register" class="register-link">Regístrate</router-link>
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -226,7 +197,7 @@ const togglePassword = () => {
   padding: 0.5rem;
   color: #4a5568;
   transition: all 0.3s ease;
-  
+
   &:hover {
     color: #667eea;
     transform: translateX(-2px);
@@ -238,7 +209,8 @@ const togglePassword = () => {
   }
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
   margin: 0;
@@ -261,9 +233,17 @@ html, body {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .login-box {
@@ -337,14 +317,14 @@ form {
   transform: translateY(5px);
   opacity: 0;
   animation: inputEnter 0.4s 0.4s ease-out forwards;
-  
+
   &:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
     outline: none;
     transform: scale(1.02);
   }
-  
+
   &.input-error {
     border-color: #dc2626 !important;
     background: #fff5f5 !important;
@@ -360,10 +340,23 @@ form {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
 }
 
 .password-container {
@@ -380,21 +373,22 @@ form {
     color: #718096;
     transition: all 0.3s ease;
     padding: 4px;
-    
+
     &:hover {
       color: #667eea;
       transform: translateY(-50%) scale(1.1);
     }
-    
+
     &:active {
       transform: translateY(-50%) scale(0.95);
     }
-    
+
     svg {
       display: block;
     }
   }
 }
+
 /* Nuevos estilos para Google Sign-In */
 .social-login {
   margin-top: 2rem;
@@ -404,13 +398,13 @@ form {
   display: flex;
   align-items: center;
   margin: 1.5rem 0;
-  
+
   .line {
     flex: 1;
     height: 1px;
     background: #e2e8f0;
   }
-  
+
   .text {
     padding: 0 1rem;
     color: #718096;
@@ -429,13 +423,13 @@ form {
   gap: 0.75rem;
   transition: all 0.3s ease;
   padding: 0.875rem 1rem;
-  
+
   &:hover:not(:disabled) {
     border-color: #cbd5e0 !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
-  
+
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
@@ -446,6 +440,7 @@ form {
   width: 20px;
   height: 20px;
 }
+
 .forgot-password {
   font-size: 0.875rem;
   color: #667eea;
@@ -454,7 +449,7 @@ form {
   transition: all 0.3s ease;
   opacity: 0;
   animation: fadeIn 0.4s 0.6s ease-out forwards;
-  
+
   &:hover {
     color: #764ba2;
     letter-spacing: 0.3px;
@@ -475,17 +470,17 @@ form {
   margin-top: 0.5rem;
   opacity: 0;
   animation: fadeIn 0.4s 0.7s ease-out forwards;
-  
+
   &:hover:not(:disabled) {
     background: #764ba2;
     transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(118, 75, 162, 0.15);
   }
-  
+
   &:active:not(:disabled) {
     transform: scale(0.98);
   }
-  
+
   &:disabled {
     background: #94a3b8 !important;
     cursor: not-allowed;
@@ -504,7 +499,9 @@ form {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .register-prompt {
@@ -525,14 +522,19 @@ form {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
-  
+
   &:hover {
     color: #764ba2;
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 </style>

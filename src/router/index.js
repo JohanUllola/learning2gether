@@ -23,7 +23,7 @@ import Gameframe4 from '../components/Games/gameframe4.vue';
 
 const routes = [
   {
-    path: '/login',
+    path: '/login/:met',
     name: 'Login',
     component: Login,
     meta: { guestOnly: true }
@@ -158,6 +158,13 @@ const routes = [
     component: () => import('../views/StudentDashboard.vue'),
     meta: { requiresAuth: false }
   },
+  {
+    path: '/Report',
+    name: 'Reports',
+    component: () => import('../views/Reports-views.vue'),
+    meta: { requiresAuth: false }
+  },
+
   
   // Ruta para manejar errores 404
   {

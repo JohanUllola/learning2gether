@@ -44,7 +44,7 @@
             </ul>
             
             <div class="auth-links">
-              <router-link to="/login" class="auth-link login">
+              <router-link to="/login/studen" class="auth-link login">
                 ¿Ya tienes cuenta? Inicia Sesión
               </router-link>
               <router-link to="/registro" class="auth-link register">

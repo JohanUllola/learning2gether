@@ -16,6 +16,7 @@ import { ref } from 'vue';
 import Sidebar from '../components/Sidebar.vue';
 import { useConfigStore } from '../stores/configStore';
 
+
 const configStore = useConfigStore();
 const isSidebarExpanded = ref(localStorage.getItem('is_expanded') === 'true');
 

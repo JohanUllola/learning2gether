@@ -39,7 +39,7 @@ const router = useRouter();
 
 const selectRole = (role) => {
   if (role === 'teacher') {
-    router.push('/login');
+    router.push('/login/teacher');
   } else {
     router.push('/student-name'); // Nueva ruta para estudiantes
   }

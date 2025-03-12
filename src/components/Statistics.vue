@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="header">
-      <h2>Teacher Game Analytics Dashboard</h2>
+      <h2 class="header-title">Teacher Game Analytics Dashboard</h2>
     </div>
 
     <div class="filters">
@@ -12,7 +12,7 @@
         <option value="María Gómez">María Gómez</option>
         <option value="Carlos Hernández">Carlos Hernández</option>
       </select>
-      <button @click="refreshData" class="btn refresh-button">
+      <button @click="refreshData" class="btn refresh-button" aria-label="Actualizar Datos">
         <span>Actualizar Datos</span>
         <svg class="refresh-icon" viewBox="0 0 24 24">
           <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
@@ -84,16 +84,16 @@ const setupChart = () => {
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { color: '#f3f4f6' },
+          ticks: { color: 'var(--text-color)' },
           grid: { color: 'rgba(255,255,255,0.1)' }
         },
         x: {
-          ticks: { color: '#f3f4f6' },
+          ticks: { color: 'var(--text-color)' },
           grid: { display: false }
         }
       },
       plugins: {
-        legend: { labels: { color: '#f3f4f6' } }
+        legend: { labels: { color: 'var(--text-color)' } }
       }
     }
   });
@@ -117,23 +117,51 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+/* Variables de tema para modo claro y oscuro */
+:root {
+  --background-color: #f8fafc;
+  --primary-color: #3b82f6;
+  --secondary-color: #8b5cf6;
+  --accent-color: #f59e0b;
+  --text-color: #23283b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #23283b;
+    --primary-color: #3b82f6;
+    --secondary-color: #8b5cf6;
+    --accent-color: #f59e0b;
+    --text-color: #f3f4f6;
+  }
+}
+
 .dashboard-container {
   padding: 2rem;
-  background: linear-gradient(145deg, #23283b, #2d3149);
+  background: var(--background-color);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  color: #f3f4f6;
+  color: var(--text-color);
   max-width: 1200px;
   margin: auto;
   font-family: 'Roboto', sans-serif;
   margin-left: var(--sidebar-width, 60px);
 }
 
-.header h2 {
+.header {
   text-align: center;
   margin-bottom: 1.5rem;
-  font-weight: 700;
+
+  .header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(59,130,246,0.3);
+  }
 }
 
 .filters {
@@ -142,58 +170,58 @@ onMounted(() => {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
-}
 
-.filters label {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
+  label {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
 
-select {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #4c678a;
-  background: #2d3149;
-  color: #f3f4f6;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
+  select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
 
-select:focus {
-  border-color: #5a7dab;
-}
+    &:focus {
+      border-color: var(--secondary-color);
+    }
+  }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-size: 1rem;
-  font-weight: 600;
-  background: linear-gradient(45deg, #4c678a, #5a7dab);
-  color: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
 
-.refresh-icon {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-  transition: transform 0.3s ease;
-}
+    .refresh-icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
 
-.btn:hover .refresh-icon {
-  transform: rotate(360deg);
+    &:hover .refresh-icon {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 .stats-grid {
@@ -210,21 +238,21 @@ select:focus {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   text-align: center;
   transition: transform 0.3s ease;
-}
 
-.stat-card:hover {
-  transform: translateY(-5px);
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .chart-section {
   background: rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 1rem;
-}
 
-.chart-section h3 {
-  text-align: center;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
 }
 </style>

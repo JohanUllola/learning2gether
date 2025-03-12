@@ -23,7 +23,7 @@ export const useUserStore = defineStore("userStore", {
   actions: {
     async initializeAuthListener() {
       if (this.authUnsubscribe) return;
-
+      console.log("Auth state changed:", user);
       this.authUnsubscribe = onAuthStateChanged(auth, (user) => {
         this.userData = user ? { 
           email: user.email, 
@@ -33,6 +33,8 @@ export const useUserStore = defineStore("userStore", {
         } : null;
       });
     },
+
+   
 
     // Nuevo método para login con Google
     async loginWithGoogle() {
