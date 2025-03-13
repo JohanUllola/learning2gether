@@ -1,116 +1,225 @@
 <template>
-  <div :class="['profile-container', { 'dark-mode': isDarkMode }]">
-    <h1 class="page-title">Perfil</h1>
+  <div class="profile-container" :class="{ 'dark-mode': isDarkMode }">
+    <h1 class="header-title">
+      <i class="fas fa-chalkboard-teacher"></i>
+      Perfil del Profesor
+    </h1>
     
-    <div :class="['profile-card', { 'dark-mode': isDarkMode }]">
-      <div class="profile-pic-wrapper">
-        <label for="profilePic">
-          <img :src="profilePic" alt="Avatar" class="avatar" />
-          <input id="profilePic" type="file" @change="updateProfilePic" />
+    <main class="profile-card">
+      <!-- Sección Avatar -->
+      <section class="profile-section avatar-section">
+        <label class="avatar-upload">
+          <input type="file" accept="image/*" @change="updateProfilePic" />
+          <img :src="profilePic" alt="Avatar del profesor" class="avatar" />
+          <span class="upload-overlay">
+            <i class="fas fa-camera"></i>
+          </span>
         </label>
-      </div>
-      
-      <div class="profile-details">
-        <div class="detail-row">
-          <label class="detail-label">Usuario:</label>
-          <span v-if="!editingName">{{ userName }}</span>
-          <input v-else v-model="userName" @blur="editingName = false" :class="{ 'dark-mode': isDarkMode }" />
-          <button class="edit-button" @click="toggleEditing('name')" aria-label="Editar nombre">
-            <i class="fas fa-edit"></i>
-          </button>
+        <h3 class="user-name">{{ userDetails.name.value }}</h3>
+        <p class="user-role">Profesor de {{ userDetails.subjects.value }}</p>
+      </section>
+
+      <!-- Sección Detalles -->
+      <section class="profile-section details-section">
+        <h2 class="section-title">
+          <i class="fas fa-user-edit"></i>
+          Información Personal
+        </h2>
+        
+        <div class="detail-grid">
+          <div v-for="(detail, key) in editableDetails" :key="key" class="detail-item">
+            <label :for="`input-${key}`" class="detail-label">
+              {{ detail.label }}
+              <button 
+                class="edit-icon" 
+                @click="toggleEditing(key)"
+                :aria-label="`Editar ${detail.label}`"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+            </label>
+            
+            <template v-if="!detail.editing">
+              <div class="detail-value">{{ detail.value || '-' }}</div>
+            </template>
+            
+            <template v-else>
+              <input
+                v-if="detail.type !== 'select' && detail.type !== 'textarea'"
+                :type="detail.type || 'text'"
+                :id="`input-${key}`"
+                v-model="detail.value"
+                class="detail-input"
+                @blur="detail.editing = false"
+              />
+              
+              <select
+                v-if="detail.type === 'select'"
+                :id="`input-${key}`"
+                v-model="detail.value"
+                class="detail-input"
+                @blur="detail.editing = false"
+              >
+                <option v-for="option in genderOptions" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+              
+              <textarea
+                v-if="detail.type === 'textarea'"
+                :id="`input-${key}`"
+                v-model="detail.value"
+                class="detail-input"
+                @blur="detail.editing = false"
+                rows="3"
+              ></textarea>
+            </template>
+          </div>
         </div>
-        <div class="detail-row">
-          <label class="detail-label">Email:</label>
-          <span v-if="!editingEmail">{{ userEmail }}</span>
-          <input v-else v-model="userEmail" @blur="editingEmail = false" :class="{ 'dark-mode': isDarkMode }" />
-          <button class="edit-button" @click="toggleEditing('email')" aria-label="Editar email">
-            <i class="fas fa-edit"></i>
-          </button>
+      </section>
+
+      <!-- Sección Preferencias -->
+      <section class="profile-section preferences-section">
+        <h2 class="section-title">
+          <i class="fas fa-cog"></i>
+          Preferencias
+        </h2>
+        
+        <div class="preferences-grid">
+          <div class="preference-item">
+            <label>Modo Oscuro</label>
+            <div class="toggle-switch">
+              <input 
+                type="checkbox" 
+                v-model="isDarkMode" 
+                @change="toggleDarkMode"
+                id="darkModeToggle"
+              />
+              <span class="slider"></span>
+            </div>
+          </div>
+          <div class="preference-item">
+            <label>Notificaciones</label>
+            <div class="toggle-switch">
+              <input 
+                type="checkbox" 
+                v-model="notifications"
+                id="notificationsToggle"
+              />
+              <span class="slider"></span>
+            </div>
+          </div>
         </div>
-        <div class="detail-row">
-          <label class="detail-label">Teléfono:</label>
-          <span v-if="!editingPhone">{{ userPhone }}</span>
-          <input v-else v-model="userPhone" @blur="editingPhone = false" :class="{ 'dark-mode': isDarkMode }" />
-          <button class="edit-button" @click="toggleEditing('phone')" aria-label="Editar teléfono">
-            <i class="fas fa-edit"></i>
-          </button>
+      </section>
+
+      <!-- Sección Contraseña -->
+      <section class="accordion-section">
+        <div class="accordion-header" @click="toggleSection('changePassword')">
+          <i class="fas fa-key"></i>
+          <h3>Cambiar Contraseña</h3>
+          <i class="fas" :class="showChangePassword ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
         </div>
-        <div class="detail-row">
-          <label class="detail-label">Biografía:</label>
-          <span v-if="!editingBio">{{ userBio }}</span>
-          <textarea v-else v-model="userBio" @blur="editingBio = false" :class="{ 'dark-mode': isDarkMode }"></textarea>
-          <button class="edit-button" @click="toggleEditing('bio')" aria-label="Editar biografía">
-            <i class="fas fa-edit"></i>
-          </button>
+        <transition name="slide-down">
+          <div v-if="showChangePassword" class="accordion-content">
+            <div class="password-form">
+              <input
+                type="password"
+                v-model="currentPassword"
+                placeholder="Contraseña actual"
+                class="form-input"
+              />
+              <input
+                type="password"
+                v-model="newPassword"
+                placeholder="Nueva contraseña"
+                class="form-input"
+              />
+              <input
+                type="password"
+                v-model="confirmNewPassword"
+                placeholder="Confirmar contraseña"
+                class="form-input"
+              />
+              <button class="btn primary" @click="changePassword">
+                <i class="fas fa-save"></i>
+                Guardar Contraseña
+              </button>
+            </div>
+          </div>
+        </transition>
+      </section>
+
+      <!-- Sección Redes Sociales -->
+      <section class="accordion-section">
+        <div class="accordion-header" @click="toggleSection('socialLinks')">
+          <i class="fas fa-share-alt"></i>
+          <h3>Redes Sociales</h3>
+          <i class="fas" :class="showSocialLinks ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
         </div>
-      </div>
-      
-      <div class="preferences">
-        <div class="preference-item">
-          <span>Modo Oscuro</span>
-          <label class="switch">
-            <input type="checkbox" v-model="isDarkMode" @change="toggleDarkMode" />
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="preference-item">
-          <span>Notificaciones</span>
-          <label class="switch">
-            <input type="checkbox" v-model="notifications" />
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-      
-      <div class="action-buttons">
-        <button class="action-btn" @click="toggleSection('changePassword')">
-          <i class="fas fa-key"></i> Cambiar Contraseña
+        <transition name="slide-down">
+          <div v-if="showSocialLinks" class="accordion-content">
+            <div class="social-links-form">
+              <input
+                type="url"
+                v-model="facebookLink"
+                placeholder="URL de Facebook"
+                class="form-input"
+              />
+              <input
+                type="url"
+                v-model="twitterLink"
+                placeholder="URL de Twitter"
+                class="form-input"
+              />
+              <input
+                type="url"
+                v-model="linkedinLink"
+                placeholder="URL de LinkedIn"
+                class="form-input"
+              />
+              <button class="btn primary" @click="saveSocialLinks">
+                <i class="fas fa-save"></i>
+                Guardar Enlaces
+              </button>
+            </div>
+          </div>
+        </transition>
+      </section>
+
+      <!-- Acciones Principales -->
+      <div class="action-bar">
+        <button class="btn secondary" @click="resetChanges">
+          <i class="fas fa-undo"></i>
+          Restablecer
         </button>
-        <button class="action-btn" @click="toggleSection('socialLinks')">
-          <i class="fas fa-share-alt"></i> Redes Sociales
+        <button class="btn primary" @click="saveProfile">
+          <i class="fas fa-save"></i>
+          Guardar Cambios
         </button>
       </div>
-      
-      <transition name="fade">
-        <div v-if="showChangePassword" class="security-settings">
-          <input type="password" v-model="currentPassword" placeholder="Contraseña Actual" :class="{ 'dark-mode': isDarkMode }" />
-          <input type="password" v-model="newPassword" placeholder="Nueva Contraseña" :class="{ 'dark-mode': isDarkMode }" />
-          <input type="password" v-model="confirmNewPassword" placeholder="Confirmar Nueva Contraseña" :class="{ 'dark-mode': isDarkMode }" />
-          <button class="action-btn" @click="changePassword">Guardar Contraseña</button>
-        </div>
-      </transition>
-      
-      <transition name="fade">
-        <div v-if="showSocialLinks" class="social-links">
-          <input type="text" v-model="facebookLink" placeholder="Facebook URL" :class="{ 'dark-mode': isDarkMode }" />
-          <input type="text" v-model="twitterLink" placeholder="Twitter URL" :class="{ 'dark-mode': isDarkMode }" />
-          <input type="text" v-model="linkedinLink" placeholder="LinkedIn URL" :class="{ 'dark-mode': isDarkMode }" />
-          <button class="action-btn" @click="saveSocialLinks">Guardar Enlaces</button>
-        </div>
-      </transition>
-      
-      <div class="save-button-container">
-        <button class="save-btn" @click="saveProfile">Guardar Cambios</button>
-      </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useConfigStore } from '../stores/configStore';
+import { ref, computed } from 'vue';
 
-const configStore = useConfigStore();
+const profilePic = ref('https://via.placeholder.com/150');
+const isDarkMode = ref(false);
+const notifications = ref(true);
+const showChangePassword = ref(false);
+const showSocialLinks = ref(false);
 
-// Datos de perfil iniciales
-const profilePic = ref(new URL('../assets/perfil.png', import.meta.url).href);
-const userName = ref(configStore.userName);
-const userEmail = ref(configStore.userEmail);
-const userPhone = ref('+01 234 567 000');
-const userBio = ref('Esta es mi biografía...');
-const isDarkMode = ref(configStore.isDarkMode);
-const notifications = ref(configStore.notifications);
+const userDetails = ref({
+  name: { label: 'Nombre completo', value: 'Ana María López', editing: false },
+  email: { label: 'Correo electrónico', value: 'ana.lopez@example.com', editing: false, type: 'email' },
+  phone: { label: 'Teléfono', value: '+34 612 345 678', editing: false, type: 'tel' },
+  gender: { label: 'Género', value: 'Femenino', editing: false, type: 'select' },
+  bio: { label: 'Biografía', value: 'Profesora de Historia apasionada por la enseñanza...', editing: false, type: 'textarea' },
+  subjects: { label: 'Asignaturas', value: 'Historia, Geografía, Arte', editing: false }
+});
 
+const genderOptions = ['Femenino', 'Masculino', 'Otro', 'Prefiero no decir'];
 const currentPassword = ref('');
 const newPassword = ref('');
 const confirmNewPassword = ref('');
@@ -118,297 +227,365 @@ const facebookLink = ref('');
 const twitterLink = ref('');
 const linkedinLink = ref('');
 
-// Estados de edición y secciones desplegables
-const editingName = ref(false);
-const editingEmail = ref(false);
-const editingPhone = ref(false);
-const editingBio = ref(false);
-const showChangePassword = ref(false);
-const showSocialLinks = ref(false);
+const editableDetails = computed(() => 
+  Object.entries(userDetails.value)
+    .filter(([key]) => !['subjects'].includes(key))
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+);
 
-const toggleEditing = (field) => {
-  if (field === 'name') editingName.value = true;
-  else if (field === 'email') editingEmail.value = true;
-  else if (field === 'phone') editingPhone.value = true;
-  else if (field === 'bio') editingBio.value = true;
+const toggleEditing = (key) => {
+  userDetails.value[key].editing = !userDetails.value[key].editing;
 };
 
 const toggleSection = (section) => {
-  if (section === 'changePassword') showChangePassword.value = !showChangePassword.value;
-  else if (section === 'socialLinks') showSocialLinks.value = !showSocialLinks.value;
+  if (section === 'changePassword') {
+    showChangePassword.value = !showChangePassword.value;
+  } else {
+    showSocialLinks.value = !showSocialLinks.value;
+  }
 };
 
 const updateProfilePic = (event) => {
   const file = event.target.files[0];
   if (file) {
-    const url = URL.createObjectURL(file);
-    profilePic.value = url;
-    configStore.setProfilePic(url);
+    profilePic.value = URL.createObjectURL(file);
   }
 };
 
 const toggleDarkMode = () => {
-  configStore.toggleDarkMode();
-  isDarkMode.value = configStore.isDarkMode;
+  // Agregamos o quitamos la clase 'dark-mode' al elemento raíz
+  document.documentElement.classList.toggle('dark-mode', isDarkMode.value);
 };
 
 const changePassword = () => {
   if (newPassword.value === confirmNewPassword.value) {
-    // Aquí colocar la lógica de cambio de contraseña
-    alert('Contraseña cambiada con éxito');
+    alert('Contraseña actualizada correctamente');
+    showChangePassword.value = false;
   } else {
     alert('Las contraseñas no coinciden');
   }
 };
 
 const saveSocialLinks = () => {
-  // Aquí colocar la lógica para guardar enlaces de redes sociales
-  alert('Enlaces de redes sociales guardados con éxito');
+  alert('Enlaces sociales guardados');
+  showSocialLinks.value = false;
+};
+
+const resetChanges = () => {
+  Object.values(userDetails.value).forEach(detail => {
+    if (detail.editing) detail.editing = false;
+  });
 };
 
 const saveProfile = () => {
-  configStore.userName = userName.value;
-  configStore.userEmail = userEmail.value;
-  configStore.saveSettings();
-  alert('Perfil guardado con éxito');
+  alert('Perfil guardado exitosamente');
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
-/* Variables de tema */
 :root {
-  --bg-light: #f5f7fa;
-  --text-light: #2c3e50;
-  --card-light: #ffffff;
-  --accent-light: #3498db;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #4f46e5;
+  --bg-light: #f8fafc;
+  --bg-dark: #1e293b;
+  --text-light: #ffffff;
+  --text-dark: #0f172a;
+  --border-color: #e2e8f0;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+}
 
-  --bg-dark: #2c3e50;
-  --text-dark: #ecf0f1;
-  --card-dark: #34495e;
-  --accent-dark: #2980b9;
+.dark-mode {
+  --bg-light: #1e293b;
+  --text-dark: #f8fafc;
+  --border-color: #334155;
 }
 
 .profile-container {
-  padding: 20px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
   background: var(--bg-light);
-  color: var(--text-light);
-  min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
-}
-
-.profile-container.dark-mode {
-  background: var(--bg-dark);
   color: var(--text-dark);
+  transition: var(--transition);
 }
 
-.page-title {
+.header-title {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .profile-card {
-  background: var(--card-light);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin: 0 auto;
-  transition: background 0.3s, color 0.3s;
-  position: relative;
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
 }
 
-.profile-card.dark-mode {
-  background: var(--card-dark);
-  color: var(--text-dark);
-}
-
-.profile-pic-wrapper {
+.avatar-section {
   text-align: center;
-  margin-bottom: 20px;
-  position: relative;
+  .avatar-upload {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      transition: var(--transition);
+    }
+    
+    .upload-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+      
+      .fa-camera {
+        color: white;
+        font-size: 1.5rem;
+      }
+    }
+    
+    &:hover .upload-overlay {
+      opacity: 1;
+    }
+    
+    input[type="file"] {
+      display: none;
+    }
+  }
+  
+  .user-name {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .user-role {
+    color: #64748b;
+    margin: 0;
+  }
 }
 
-.avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent-light);
-  transition: border-color 0.3s;
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-.dark-mode .avatar {
-  border-color: var(--accent-dark);
-}
-
-.profile-pic-wrapper input {
-  display: none;
-}
-
-.profile-details {
-  margin-bottom: 20px;
-}
-
-.detail-row {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
+.detail-item {
+  padding: 1rem;
+  background: rgba(var(--primary), 0.05);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
 }
 
 .detail-label {
-  width: 100px;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
-.detail-row span,
-.detail-row input,
-.detail-row textarea {
-  flex: 1;
-  font-size: 1rem;
-}
-
-.detail-row input,
-.detail-row textarea {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: background 0.3s, color 0.3s;
-}
-
-.detail-row input.dark-mode,
-.detail-row textarea.dark-mode {
-  background: var(--bg-dark);
-  color: var(--text-dark);
-  border: 1px solid #95a5a6;
-}
-
-.edit-button {
+.edit-icon {
   background: none;
   border: none;
+  color: var(--primary);
   cursor: pointer;
-  color: var(--accent-light);
-  transition: color 0.3s;
-  font-size: 1.2rem;
-  margin-left: 5px;
+  padding: 0.25rem;
+  
+  &:hover {
+    color: var(--primary-dark);
+  }
 }
 
-.edit-button:hover {
-  color: var(--accent-dark);
+.detail-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-light);
+  color: var(--text-dark);
+  transition: var(--transition);
 }
 
-.preferences {
+.preferences-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 1rem;
 }
 
-.preference-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 1rem;
-}
-
-.switch {
+.toggle-switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 20px;
+  width: 48px;
+  height: 24px;
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    
+    &:checked + .slider {
+      background-color: var(--primary);
+    }
+    
+    &:checked + .slider:before {
+      transform: translateX(24px);
+    }
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: var(--transition);
+    border-radius: 24px;
+    
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+  }
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.accordion-section {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  
+  .accordion-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    gap: 0.75rem;
+    
+    h3 {
+      margin: 0;
+      flex-grow: 1;
+    }
+  }
+  
+  .accordion-content {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
 }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 20px;
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: max-height 0.3s ease;
+  overflow: hidden;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
+.slide-down-enter-from,
+.slide-down-leave-to {
+  max-height: 0;
 }
 
-input:checked + .slider {
-  background-color: #4caf50;
+.slide-down-enter-to,
+.slide-down-leave-from {
+  max-height: 500px;
 }
 
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-.action-buttons {
+.action-bar {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
 }
 
-.action-btn,
-.save-btn {
-  padding: 10px 20px;
-  background: var(--accent-light);
-  color: #fff;
+.btn {
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background 0.3s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  transition: var(--transition);
+  
+  &.primary {
+    background-color: var(--primary);
+    color: white;
+    
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+  
+  &.secondary {
+    background-color: #e2e8f0;
+    color: var(--text-dark);
+    
+    &:hover {
+      background-color: #cbd5e1;
+    }
+  }
 }
 
-.action-btn:hover,
-.save-btn:hover {
-  background: var(--accent-dark);
-}
-
-.security-settings,
-.social-links {
-  margin: 15px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.security-settings input,
-.social-links input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: background 0.3s, color 0.3s;
-}
-
-.security-settings input.dark-mode,
-.social-links input.dark-mode {
-  background: var(--bg-dark);
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-light);
   color: var(--text-dark);
-  border: 1px solid #95a5a6;
 }
 
-.save-button-container {
-  text-align: center;
-  margin-top: 20px;
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+  
+  .profile-card {
+    padding: 1rem;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-bar {
+    flex-direction: column;
+  }
 }
 </style>
