@@ -211,11 +211,11 @@ const showChangePassword = ref(false);
 const showSocialLinks = ref(false);
 
 const userDetails = ref({
-  name: { label: 'Nombre completo', value: 'Ana María López', editing: false },
-  email: { label: 'Correo electrónico', value: 'ana.lopez@example.com', editing: false, type: 'email' },
-  phone: { label: 'Teléfono', value: '+34 612 345 678', editing: false, type: 'tel' },
-  gender: { label: 'Género', value: 'Femenino', editing: false, type: 'select' },
-  bio: { label: 'Biografía', value: 'Profesora de Historia apasionada por la enseñanza...', editing: false, type: 'textarea' },
+  name: { label: 'Nombre completo', value: 'Johan Manuel Peguero Ullola', editing: false },
+  email: { label: 'Correo electrónico', value: 'johanullola@gmail.com', editing: false, type: 'email' },
+  phone: { label: 'Teléfono', value: '+ 829 779 0182', editing: false, type: 'tel' },
+  gender: { label: 'Género', value: 'Masculino', editing: false, type: 'select' },
+  bio: { label: 'Biografía', value: 'Profesor de Historia apasionada por la enseñanza...', editing: false, type: 'textarea' },
   subjects: { label: 'Asignaturas', value: 'Historia, Geografía, Arte', editing: false }
 });
 
@@ -324,6 +324,7 @@ const saveProfile = () => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  color: #4f46e5;
 }
 
 .profile-card {
